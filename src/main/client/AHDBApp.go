@@ -5,6 +5,7 @@ import (
 	_ "github.com/andlabs/ui/winmanifest"
 	"github.com/getlantern/systray"
 	log "github.com/sirupsen/logrus"
+	easy "github.com/t-tomalak/logrus-easy-formatter"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -66,8 +67,9 @@ func findTSMFiles(wowPathStr string) {
 
 func main() {
 	log.SetLevel(log.DebugLevel)
-	log.SetFormatter(&log.TextFormatter{
-		DisableColors: false,
+	log.SetFormatter(&easy.Formatter{
+		TimestampFormat: "2006-01-02 15:04:05",
+		LogFormat:       "[%lvl%]: %time% - %msg%\n",
 	})
 
 	platform := runtime.GOOS
