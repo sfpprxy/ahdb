@@ -30,3 +30,5 @@ build/
 ### VS Code ###
 .vscode/
 .DS_Store
+/src/main/client/AHDBApp
+/src/main/AHDBApp
