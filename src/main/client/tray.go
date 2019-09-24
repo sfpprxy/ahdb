@@ -1,7 +1,6 @@
 package main
 
 import "github.com/getlantern/systray"
-import log "github.com/sirupsen/logrus"
 
 func setupTray() {
 	systray.Run(onReady, onExit)

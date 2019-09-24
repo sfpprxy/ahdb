@@ -4,13 +4,21 @@ import (
 	"github.com/andlabs/ui"
 	_ "github.com/andlabs/ui/winmanifest"
 	"github.com/getlantern/systray"
-	log "github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 	easy "github.com/t-tomalak/logrus-easy-formatter"
-	"io/ioutil"
 	"os"
-	"path/filepath"
 	"runtime"
+	"time"
 )
+
+var log = logrus.New()
+func init () {
+	log.SetLevel(logrus.DebugLevel)
+	log.SetFormatter(&easy.Formatter{
+		TimestampFormat: "2006-01-02 15:04:05",
+		LogFormat:       "[%lvl%]: %time% - %msg%\n",
+	})
+}
 
 var mainwin *ui.Window
 var wtfDirs []os.FileInfo
@@ -38,7 +46,7 @@ func mainui() {
 		box.Append(chooseBtn, true)
 
 		chooseBtn.OnClicked(func(*ui.Button) {
-			findTSMFiles(ui.OpenFile(mainwin))
+			saveWowPath(ui.OpenFile(mainwin))
 		})
 
 		hideBtn := ui.NewButton("最小化")
@@ -54,31 +62,29 @@ func mainui() {
 	}
 }
 
-func findTSMFiles(wowPathStr string) {
-	dir := filepath.Dir(wowPathStr)
-	log.Debug(dir)
-	accountDirs, e := ioutil.ReadDir(filepath.Join(dir, "WTF"))
-	if e != nil {
-		log.Error(e)
+func jobLoop() {
+	for {
+		changedTsmfilesByAccount := getChangedTsmfilesByAccount()
+		if len(changedTsmfilesByAccount) == 0 {
+			break
+		}
+		valuableDataByAccount := selectValuableDataByAccount(changedTsmfilesByAccount)
+		log.Debug(valuableDataByAccount)
+		//TODO impl uploader
+		time.Sleep(time.Minute * 1)
 	}
-	log.Debug(accountDirs)
-	wtfDirs = accountDirs
 }
 
 func main() {
-	log.SetLevel(log.DebugLevel)
-	log.SetFormatter(&easy.Formatter{
-		TimestampFormat: "2006-01-02 15:04:05",
-		LogFormat:       "[%lvl%]: %time% - %msg%\n",
-	})
-
 	platform := runtime.GOOS
 	switch platform {
 	case "windows":
 		go mainui()
 		setupTray()
+		go jobLoop()
 	case "darwin":
 		mainui()
+		go jobLoop()
 	}
 
 }
