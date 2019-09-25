@@ -6,8 +6,6 @@ import (
 	"github.com/getlantern/systray"
 	"github.com/sirupsen/logrus"
 	easy "github.com/t-tomalak/logrus-easy-formatter"
-	"os"
-	"runtime"
 	"time"
 )
 
@@ -21,11 +19,11 @@ func init () {
 }
 
 var mainwin *ui.Window
-var wtfDirs []os.FileInfo
+var lastUpload time.Time
 
 func mainui() {
 	err := ui.Main(func() {
-		mainwin = ui.NewWindow("Auction House Database App", 500, 500, true)
+		mainwin = ui.NewWindow("Auction House Database App", 500, 300, true)
 		mainwin.OnClosing(func(*ui.Window) bool {
 			mainwin.Destroy()
 			ui.Quit()
@@ -42,23 +40,36 @@ func mainui() {
 		mainwin.SetChild(box)
 		mainwin.SetMargined(true)
 
+		lastUploadLb := ui.NewLabel("")
+		box.Append(lastUploadLb, true)
+
 		chooseBtn := ui.NewButton("选择Wow.exe")
 		box.Append(chooseBtn, true)
+
+		hideBtn := ui.NewButton("最小化")
+		box.Append(hideBtn, true)
+
 
 		chooseBtn.OnClicked(func(*ui.Button) {
 			saveWowPath(ui.OpenFile(mainwin))
 		})
-
-		hideBtn := ui.NewButton("最小化")
-		box.Append(hideBtn, true)
 		hideBtn.OnClicked(func(*ui.Button) {
 			mainwin.Hide()
 		})
 
+		go panelInfoUpdater(lastUploadLb)
+
 		mainwin.Show()
 	})
-	if err != nil {
-		log.Fatalln(err)
+	check(err)
+}
+
+func panelInfoUpdater(lastUploadLb *ui.Label) {
+	for {
+		ui.QueueMain(func() {
+			lastUploadLb.SetText("最近上传："+ lastUpload.Format("2006-01-02 15:04:05"))
+		})
+		time.Sleep(1 * time.Second)
 	}
 }
 
@@ -66,25 +77,27 @@ func jobLoop() {
 	for {
 		changedTsmfilesByAccount := getChangedTsmfilesByAccount()
 		if len(changedTsmfilesByAccount) == 0 {
-			break
+			time.Sleep(time.Second * 10)
+			continue
 		}
-		valuableDataByAccount := selectValuableDataByAccount(changedTsmfilesByAccount)
-		log.Debug(valuableDataByAccount)
-		//TODO impl uploader
+		valuableDataByAccount := extractValuableDataByAccount(changedTsmfilesByAccount)
+		uploaded := upload(valuableDataByAccount)
+		if uploaded {
+			lastUpload = time.Now()
+		}
 		time.Sleep(time.Minute * 1)
 	}
 }
 
 func main() {
-	platform := runtime.GOOS
-	switch platform {
-	case "windows":
-		go mainui()
-		setupTray()
+	if isOnMac() {
 		go jobLoop()
-	case "darwin":
 		mainui()
-		go jobLoop()
 	}
 
+	if isOnWin() {
+		go jobLoop()
+		go mainui()
+		setupTray()
+	}
 }

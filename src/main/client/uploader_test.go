@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestExtractValuableDataByAccount(t *testing.T) {
+func TestUpload(t *testing.T) {
 	changedTsmfilesByAccount := make(map[string]string)
 	winPath := "D:\\Game\\World of Warcraft\\_classic_\\WTF\\Account\\178635643#2\\SavedVariables\\TradeSkillMaster.lua"
 	macPath := "/Applications/World of Warcraft/_classic_/WTF/Account/178635643#2/SavedVariables/TradeSkillMaster.lua"
@@ -15,5 +15,7 @@ func TestExtractValuableDataByAccount(t *testing.T) {
 	}
 
 	changedTsmfilesByAccount["178635643#2"] = path
-	extractValuableDataByAccount(changedTsmfilesByAccount)
+	valuableDataByAccount := extractValuableDataByAccount(changedTsmfilesByAccount)
+
+	upload(valuableDataByAccount)
 }

@@ -5,18 +5,16 @@ import (
 	"strings"
 )
 
-func selectValuableDataByAccount(tsmfilesByAccount map[string]string) map[string]ValuableData {
-	dataByAccount := make(map[string]ValuableData)
+func extractValuableDataByAccount(tsmfilesByAccount map[string]string) []ValuableDataByAccount {
+	dataByAccount := make([]ValuableDataByAccount, 0)
 	for account, f := range tsmfilesByAccount {
 		bytes, e := ioutil.ReadFile(f)
-		if e != nil {
-			log.Error(e)
-		}
+		check(e, " extractValuableDataByAccount err")
 		rawStr := string(bytes)
 		charStr := subStr(rawStr, "[\"char\"] = {", "},")
 		scanStr := subStr(rawStr, "[\"f@Horde - 觅心者@internalData@csvAuctionDBScan\"] = \"", "\",")
 
-		dataByAccount[account] = ValuableData{charStr, scanStr}
+		dataByAccount = append(dataByAccount, ValuableDataByAccount{account, ValuableData{charStr, scanStr}})
 	}
 
 	return dataByAccount

@@ -8,26 +8,26 @@ import (
 	"time"
 )
 
-func readWowPath() string {
+var confFile = "adhb.conf"
 
-	return ""
+func readWowPath() string {
+	bytes, e := ioutil.ReadFile(confFile)
+	check(e)
+	return string(bytes)
 }
 
-func saveWowPath(file string) {
-
-
+func saveWowPath(wowPath string) {
+	e := ioutil.WriteFile(confFile, []byte(wowPath), 0644)
+	check(e)
 }
 
 func findTsmFiles(wowPathStr string) map[string]string {
 	dir := filepath.Dir(wowPathStr)
 	accountDir := filepath.Join(dir, "WTF", "Account")
 	accountDirs, e := ioutil.ReadDir(accountDir)
-	if e != nil {
-		log.Error(e)
-	}
+	check(e)
 	if len(accountDirs) < 1 {
-		log.Error("no Account under WTF")
-		os.Exit(1)
+		log.Warn("未找到魔兽世界账户文件，请登录魔兽")
 	}
 
 	tsmfilesByAccount := make(map[string]string)
@@ -38,6 +38,9 @@ func findTsmFiles(wowPathStr string) map[string]string {
 			tsmfilesByAccount[name] = tsmFilePath
 		}
 	}
+	if len(tsmfilesByAccount) == 0 {
+		log.Warn("未找到TSM数据文件")
+	}
 
 	return tsmfilesByAccount
 }
@@ -46,9 +49,7 @@ func filterChangedTsmFilesByAccount(tsmfilesByAccount map[string]string) map[str
 	changedTsmfilesByAccount := make(map[string]string)
 	for a, f := range tsmfilesByAccount {
 		info, e := os.Stat(f)
-		if e != nil {
-			log.Error(e, a)
-		}
+		check(e, a)
 		durSinceChanged := time.Now().Sub(info.ModTime())
 		if durSinceChanged.Minutes() < 10 {
 			changedTsmfilesByAccount[a] = f

@@ -1,11 +1,11 @@
 package main
 
-type Account struct {
-	Id    string
-	Chars []string
+type ValuableData struct {
+	Chars         string `json:"chars"`
+	AuctionDBScan string `json:"auctionDBScan"`
 }
 
-type ValuableData struct {
-	Chars         string
-	AuctionDBScan string
+type ValuableDataByAccount struct {
+	AccountId    string       `json:"accountId"`
+	ValuableData ValuableData `json:"valuableData"`
 }
