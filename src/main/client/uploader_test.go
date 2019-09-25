@@ -17,5 +17,6 @@ func TestUpload(t *testing.T) {
 	changedTsmfilesByAccount["178635643#2"] = path
 	valuableDataByAccount := extractValuableDataByAccount(changedTsmfilesByAccount)
 
-	upload(valuableDataByAccount)
+	ok := upload(valuableDataByAccount)
+	log.Debug("ok ", ok)
 }

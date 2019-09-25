@@ -6,6 +6,7 @@ type ValuableData struct {
 }
 
 type ValuableDataByAccount struct {
+	Type         string       `json:"type"`
 	AccountId    string       `json:"accountId"`
 	ValuableData ValuableData `json:"valuableData"`
 }

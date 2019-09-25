@@ -11,6 +11,7 @@ import (
 
 var log = logrus.New()
 func init () {
+	// todo log to file
 	log.SetLevel(logrus.DebugLevel)
 	log.SetFormatter(&easy.Formatter{
 		TimestampFormat: "2006-01-02 15:04:05",
@@ -23,7 +24,7 @@ var lastUpload time.Time
 
 func mainui() {
 	err := ui.Main(func() {
-		mainwin = ui.NewWindow("Auction House Database App", 500, 300, true)
+		mainwin = ui.NewWindow("Auction House Database App", 400, 300, true)
 		mainwin.OnClosing(func(*ui.Window) bool {
 			mainwin.Destroy()
 			ui.Quit()
@@ -80,11 +81,20 @@ func jobLoop() {
 			time.Sleep(time.Second * 10)
 			continue
 		}
+
 		valuableDataByAccount := extractValuableDataByAccount(changedTsmfilesByAccount)
+		if len(valuableDataByAccount) == 0 {
+			log.Debug("无新数据上传")
+			time.Sleep(time.Second * 10)
+			continue
+		}
+
 		uploaded := upload(valuableDataByAccount)
 		if uploaded {
+			log.Info("数据上传成功")
 			lastUpload = time.Now()
 		}
+
 		time.Sleep(time.Minute * 1)
 	}
 }

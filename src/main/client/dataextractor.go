@@ -5,16 +5,32 @@ import (
 	"strings"
 )
 
+var lastScanStrByAccount = make(map[string]string)
+
 func extractValuableDataByAccount(tsmfilesByAccount map[string]string) []ValuableDataByAccount {
 	dataByAccount := make([]ValuableDataByAccount, 0)
 	for account, f := range tsmfilesByAccount {
 		bytes, e := ioutil.ReadFile(f)
 		check(e, " extractValuableDataByAccount err")
 		rawStr := string(bytes)
+
 		charStr := subStr(rawStr, "[\"char\"] = {", "},")
 		scanStr := subStr(rawStr, "[\"f@Horde - 觅心者@internalData@csvAuctionDBScan\"] = \"", "\",")
 
-		dataByAccount = append(dataByAccount, ValuableDataByAccount{account, ValuableData{charStr, scanStr}})
+		if lastScanStrByAccount[account] == scanStr {
+			continue
+		} else {
+			lastScanStrByAccount[account] = scanStr
+		}
+
+		var typ string
+		if isOnMac() {
+			typ = "debug"
+		} else {
+			typ = "win"
+		}
+
+		dataByAccount = append(dataByAccount, ValuableDataByAccount{typ, account, ValuableData{charStr, scanStr}})
 	}
 
 	return dataByAccount
