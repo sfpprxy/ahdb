@@ -15,7 +15,7 @@ func init () {
 	log.SetLevel(logrus.DebugLevel)
 	log.SetFormatter(&easy.Formatter{
 		TimestampFormat: "2006-01-02 15:04:05",
-		LogFormat:       "[%lvl%]: %time% - %msg%\n",
+		LogFormat:       "[%lvl%]: %time% - %msg%\r\n",
 	})
 	f, err := os.OpenFile("ahdb.log", os.O_WRONLY | os.O_CREATE, 0755)
 	check(err)
