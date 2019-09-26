@@ -8,19 +8,6 @@ import (
 	"time"
 )
 
-var confFile = "adhb.conf"
-
-func readWowPath() string {
-	bytes, e := ioutil.ReadFile(confFile)
-	check(e)
-	return string(bytes)
-}
-
-func saveWowPath(wowPath string) {
-	e := ioutil.WriteFile(confFile, []byte(wowPath), 0644)
-	check(e)
-}
-
 func findTsmFiles(wowPathStr string) map[string]string {
 	dir := filepath.Dir(wowPathStr)
 	accountDir := filepath.Join(dir, "WTF", "Account")

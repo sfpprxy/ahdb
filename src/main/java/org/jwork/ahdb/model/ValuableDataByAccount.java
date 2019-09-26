@@ -1,21 +1,20 @@
 package org.jwork.ahdb.model;
 
-import javax.persistence.Id;
+import java.sql.Timestamp;
 
 public class ValuableDataByAccount {
 
-    @Id
-    public Long id;
+    public java.sql.Timestamp time;
     public String type;
     public String accountId;
     public ValuableData valuableData;
 
-    public Long getId() {
-        return id;
+    public Timestamp getTime() {
+        return time;
     }
 
-    public ValuableDataByAccount setId(Long idcc) {
-        id = idcc;
+    public ValuableDataByAccount setTime(Timestamp timecc) {
+        time = timecc;
         return this;
     }
 
@@ -44,5 +43,15 @@ public class ValuableDataByAccount {
     public ValuableDataByAccount setValuableData(ValuableData valuableDatacc) {
         valuableData = valuableDatacc;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "ValuableDataByAccount{" +
+                "\ntime=" + time +
+                "\ntype='" + type + '\'' +
+                "\naccountId='" + accountId + '\'' +
+                "\nvaluableData=" + valuableData +
+                '}';
     }
 }

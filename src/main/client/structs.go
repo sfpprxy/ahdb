@@ -10,3 +10,8 @@ type ValuableDataByAccount struct {
 	AccountId    string       `json:"accountId"`
 	ValuableData ValuableData `json:"valuableData"`
 }
+
+type Config struct {
+	WowPath    string `json:"wowPath"`
+	LastUpload string `json:"lastUpload"`
+}

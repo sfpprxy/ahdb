@@ -47,7 +47,7 @@ func mainui() {
 		chooseBtn := ui.NewButton("选择Wow.exe")
 		box.Append(chooseBtn, true)
 
-		hideBtn := ui.NewButton("最小化")
+		hideBtn := ui.NewButton("隐藏到托盘")
 		box.Append(hideBtn, true)
 
 
@@ -75,9 +75,11 @@ func panelInfoUpdater(lastUploadLb *ui.Label) {
 }
 
 func jobLoop() {
+	lastUpload = readLastUploadTime()
 	for {
 		changedTsmfilesByAccount := getChangedTsmfilesByAccount()
 		if len(changedTsmfilesByAccount) == 0 {
+			log.Debug("无文件变化")
 			time.Sleep(time.Second * 10)
 			continue
 		}
@@ -93,6 +95,7 @@ func jobLoop() {
 		if uploaded {
 			log.Info("数据上传成功")
 			lastUpload = time.Now()
+			saveLastUploadTime(lastUpload)
 		}
 
 		time.Sleep(time.Minute * 1)

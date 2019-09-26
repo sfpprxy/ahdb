@@ -12,8 +12,6 @@ func upload(data []ValuableDataByAccount) bool {
 	b, e := json.Marshal(data)
 	check(e)
 
-	log.Debug(string(b)[1:300])
-
 	client := http.Client{Timeout: time.Duration(10 * time.Second)}
 	resp, e := client.Post("http://localhost:9999/ahdb/push", "application/json", bytes.NewBuffer(b))
 	if check(e) {

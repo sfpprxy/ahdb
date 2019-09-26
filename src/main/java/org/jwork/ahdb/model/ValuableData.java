@@ -22,4 +22,12 @@ public class ValuableData {
         auctionDBScan = auctionDBScancc;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "ValuableData{" +
+                "\nchars='" + chars + '\'' +
+                "\nauctionDBScan='" + auctionDBScan + '\'' +
+                '}';
+    }
 }
