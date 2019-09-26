@@ -6,17 +6,20 @@ import (
 	"github.com/getlantern/systray"
 	"github.com/sirupsen/logrus"
 	easy "github.com/t-tomalak/logrus-easy-formatter"
+	"os"
 	"time"
 )
 
 var log = logrus.New()
 func init () {
-	// todo log to file
 	log.SetLevel(logrus.DebugLevel)
 	log.SetFormatter(&easy.Formatter{
 		TimestampFormat: "2006-01-02 15:04:05",
 		LogFormat:       "[%lvl%]: %time% - %msg%\n",
 	})
+	f, err := os.OpenFile("ahdb.log", os.O_WRONLY | os.O_CREATE, 0755)
+	check(err)
+	log.SetOutput(f)
 }
 
 var mainwin *ui.Window

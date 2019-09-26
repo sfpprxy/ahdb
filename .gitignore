@@ -36,3 +36,4 @@ build/
 /src/main/client/adhb.conf
 /src/main/godemo
 /src/main/client/adhb.json
+/src/main/client/ahdb.log
