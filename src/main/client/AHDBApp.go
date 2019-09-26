@@ -80,6 +80,7 @@ func panelInfoUpdater(lastUploadLb *ui.Label) {
 func jobLoop() {
 	lastUpload = readLastUploadTime()
 	for {
+		log.Debug("开始扫描...")
 		changedTsmfilesByAccount := getChangedTsmfilesByAccount()
 		if len(changedTsmfilesByAccount) == 0 {
 			log.Debug("无文件变化")
@@ -99,6 +100,8 @@ func jobLoop() {
 			log.Info("数据上传成功")
 			lastUpload = time.Now()
 			saveLastUploadTime(lastUpload)
+		} else {
+			log.Error("数据上传失败")
 		}
 
 		time.Sleep(time.Minute * 1)
