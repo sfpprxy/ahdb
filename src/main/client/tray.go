@@ -10,34 +10,19 @@ func setupTray() {
 }
 
 func trayUpdater() {
-	icon := IconWin
-	iconbg := IconBgWin
-	if isOnMac() {
-		icon = IconMac
-		iconbg = IconBgMac
-	}
 
 	for {
-		var blink int64
 		diff := time.Now().Sub(lastUpload)
 		if diff.Minutes() > 60 {
-			blink = 300
+			systray.SetIcon(IconCopperWin)
 		} else if diff.Minutes() > 30 {
-			blink = 800
+			systray.SetIcon(IconSilverWin)
 		} else {
-			blink = 0
+			systray.SetIcon(IconGoldWin)
 		}
 
 		systray.SetTooltip("最近上传：" + lastUpload.Format(timeLayout))
-		if blink != 0 {
-			systray.SetIcon(icon)
-			time.Sleep(time.Duration(blink) * time.Millisecond)
-			systray.SetIcon(iconbg)
-			time.Sleep(time.Duration(blink) * time.Millisecond)
-		} else {
-			systray.SetIcon(icon)
-			time.Sleep(time.Duration(1000) * time.Millisecond)
-		}
+		time.Sleep(2 * time.Second)
 	}
 }
 

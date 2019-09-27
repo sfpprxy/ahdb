@@ -33,7 +33,7 @@ func panelInfoUpdater(lastUploadLb *ui.Label) {
 		ui.QueueMain(func() {
 			lastUploadLb.SetText("最近上传：" + lastUpload.Format(timeLayout))
 		})
-		time.Sleep(1 * time.Second)
+		time.Sleep(10 * time.Second)
 	}
 }
 
