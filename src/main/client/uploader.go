@@ -12,8 +12,13 @@ func upload(data []ValuableDataByAccount) bool {
 	b, e := json.Marshal(data)
 	check(e)
 
+	url := "http://shtx.somedata.io:9999/ahdb/push"
+	if isOnMac() {
+		url = "http://localhost:9999/ahdb/push"
+	}
+
 	client := http.Client{Timeout: time.Duration(10 * time.Second)}
-	resp, e := client.Post("http://localhost:9999/ahdb/push", "application/json", bytes.NewBuffer(b))
+	resp, e := client.Post(url, "application/json", bytes.NewBuffer(b))
 	if check(e) {
 		return false
 	}
