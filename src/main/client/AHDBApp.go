@@ -11,19 +11,31 @@ import (
 )
 
 var log = logrus.New()
-func init () {
+
+func init() {
 	log.SetLevel(logrus.DebugLevel)
 	log.SetFormatter(&easy.Formatter{
 		TimestampFormat: "2006-01-02 15:04:05",
 		LogFormat:       "[%lvl%]: %time% - %msg%\r\n",
 	})
-	f, err := os.OpenFile("ahdb.log", os.O_WRONLY | os.O_CREATE, 0755)
-	check(err)
-	log.SetOutput(f)
+	if isOnWin() {
+		f, err := os.OpenFile("ahdb.log", os.O_WRONLY|os.O_CREATE, 0755)
+		check(err)
+		log.SetOutput(f)
+	}
 }
 
 var mainwin *ui.Window
 var lastUpload time.Time
+
+func panelInfoUpdater(lastUploadLb *ui.Label) {
+	for {
+		ui.QueueMain(func() {
+			lastUploadLb.SetText("最近上传：" + lastUpload.Format(timeLayout))
+		})
+		time.Sleep(1 * time.Second)
+	}
+}
 
 func mainui() {
 	err := ui.Main(func() {
@@ -44,15 +56,18 @@ func mainui() {
 		mainwin.SetChild(box)
 		mainwin.SetMargined(true)
 
-		lastUploadLb := ui.NewLabel("")
-		box.Append(lastUploadLb, true)
+		hbox := ui.NewHorizontalBox()
+		box.Append(hbox, true)
+		box.SetPadded(true)
+
+		lastUploadLb := ui.NewLabel("最近上传：")
+		hbox.Append(lastUploadLb, true)
 
 		chooseBtn := ui.NewButton("选择Wow.exe")
 		box.Append(chooseBtn, true)
 
 		hideBtn := ui.NewButton("隐藏到托盘")
 		box.Append(hideBtn, true)
-
 
 		chooseBtn.OnClicked(func(*ui.Button) {
 			saveWowPath(ui.OpenFile(mainwin))
@@ -66,15 +81,6 @@ func mainui() {
 		mainwin.Show()
 	})
 	check(err)
-}
-
-func panelInfoUpdater(lastUploadLb *ui.Label) {
-	for {
-		ui.QueueMain(func() {
-			lastUploadLb.SetText("最近上传："+ lastUpload.Format("2006-01-02 15:04:05"))
-		})
-		time.Sleep(1 * time.Second)
-	}
 }
 
 func jobLoop() {

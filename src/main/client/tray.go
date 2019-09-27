@@ -1,14 +1,27 @@
 package main
 
-import "github.com/getlantern/systray"
+import (
+	"github.com/getlantern/systray"
+	"time"
+)
 
 func setupTray() {
 	systray.Run(onReady, onExit)
 }
 
+func updateTray() {
+	for {
+		log.Debug("bian!")
+		systray.SetIcon(Icon)
+		time.Sleep(1 * time.Second)
+		systray.SetIcon(IconMac)
+		time.Sleep(1 * time.Second)
+	}
+}
+
 func onReady() {
-	systray.SetIcon(Icon)
-	systray.SetTooltip("Last Update")
+	go updateTray()
+	systray.SetTooltip("最近上传：" + lastUpload.Format(timeLayout))
 	mMain := systray.AddMenuItem("主界面", "1")
 	mQuit := systray.AddMenuItem("退出", "2")
 
