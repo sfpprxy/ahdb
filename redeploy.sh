@@ -9,4 +9,4 @@ kill $(cat ./AHDBPID)
 
 echo '> start'
 
-nohup mvn clean spring-boot:run -Dprofile=test -Dserver.port=9999./ahdbserver.log &
+nohup mvn clean spring-boot:run -Dprofile=test -Dserver.port=9999 >> ./ahdbserver.log &
