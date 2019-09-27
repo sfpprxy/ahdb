@@ -1,11 +1,8 @@
 package org.jwork.ahdb;
 
-import org.jwork.ahdb.util.U;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.Objects;
 
 public class RawDataReaderMock {
@@ -13,11 +10,7 @@ public class RawDataReaderMock {
 
     static String raw;
     static {
-        try {
-            raw = U.readAll(Paths.get("/Users/joe/Dropbox/Work/wow/ahdb/src/main/resources/tsm_valuable_info.lua"));
-        } catch (IOException ecc) {
-            ecc.printStackTrace();
-        }
+
     }
 
     public static String readItemsId() {

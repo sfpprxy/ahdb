@@ -150,10 +150,6 @@ public class U {
         return contentBuilder.toString();
     }
 
-    public static String readAll(Path path) throws IOException {
-        return Files.readString(path);
-    }
-
     public static void main(String[] args) {
         System.out.println(fixedLenStr("asd", 5));
         System.out.println(fixedLenStr("asd", 5, true));

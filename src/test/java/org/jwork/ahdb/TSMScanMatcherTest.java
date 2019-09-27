@@ -1,5 +1,6 @@
 package org.jwork.ahdb;
 
+import io.vavr.collection.HashMap;
 import io.vavr.collection.List;
 import org.junit.Test;
 import org.jwork.ahdb.model.ItemDesc;
@@ -23,9 +24,9 @@ public class TSMScanMatcherTest {
         ItemDesc i4 = ItemDescFetcher.getDesc("4479");
         List<ItemDesc> ml = List.of(i1, i2, i3, i4);
 
-        var tc = ml.map(i -> {
+        java.util.List<Map<String, Object>> tableRows = ml.map(i -> {
             ItemScan scan = isl.filter(is -> Objects.equals(is.itemString, i.id)).head();
-            Map<String, Object> row = Map.of(
+            HashMap<String, Object> row = HashMap.of(
                     "id", i.id,
                     "name", i.name,
                     "vendorSell", (i.g + "g " + i.s + "s " + i.c + "c "),
@@ -35,11 +36,11 @@ public class TSMScanMatcherTest {
                     "quantity", scan.quantity,
                     "lastScan", scan.lastScan
             );
-            return row;
+
+            return (Map<String, Object>) row.toJavaMap();
         }).asJavaMutable();
 
-        table.putAll(tc);
+        table.putAll(tableRows);
         table.prettyPrint();
-
     }
 }
