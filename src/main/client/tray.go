@@ -10,7 +10,6 @@ func setupTray() {
 }
 
 func trayUpdater() {
-
 	for {
 		diff := time.Now().Sub(lastUpload)
 		if diff.Minutes() > 60 {
