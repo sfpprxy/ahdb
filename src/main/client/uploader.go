@@ -12,7 +12,7 @@ func upload(data []ValuableDataByAccount) bool {
 	b, e := json.Marshal(data)
 	check(e)
 
-	url := "http://shtx.somedata.io:9999/ahdb/push"
+	url := "http://123.206.124.78:9999/ahdb/push"
 	if isOnMac() {
 		url = "http://localhost:9999/ahdb/push"
 	}
