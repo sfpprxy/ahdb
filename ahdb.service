@@ -6,7 +6,7 @@ After=network.target iptables.service firewalld.service
 [Service]
 Type=simple
 #User=root
-ExecStart=sh /root/ahdb/redeploy.sh
+ExecStart=/bin/sh /root/ahdb/redeploy.sh
 PIDFile=/var/run/ahdb.pid
 Restart=always
 
