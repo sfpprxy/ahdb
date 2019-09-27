@@ -118,6 +118,7 @@ func main() {
 	if isOnMac() {
 		go jobLoop()
 		mainui()
+		//setupTray()
 	}
 
 	if isOnWin() {
