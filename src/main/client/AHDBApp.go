@@ -19,7 +19,7 @@ func init() {
 		LogFormat:       "[%lvl%]: %time% - %msg%\r\n",
 	})
 	if isOnWin() {
-		f, err := os.OpenFile("ahdb.log", os.O_WRONLY|os.O_CREATE, 0755)
+		f, err := os.OpenFile("ahdb.log", os.O_RDWR|os.O_APPEND|os.O_CREATE, 0755)
 		check(err)
 		log.SetOutput(f)
 	}
@@ -33,7 +33,7 @@ func panelInfoUpdater(lastUploadLb *ui.Label) {
 		ui.QueueMain(func() {
 			lastUploadLb.SetText("最近上传：" + lastUpload.Format(timeLayout))
 		})
-		time.Sleep(10 * time.Second)
+		time.Sleep(2 * time.Second)
 	}
 }
 
@@ -83,10 +83,13 @@ func mainui() {
 	check(err)
 }
 
+var lc = 1
+
 func jobLoop() {
 	lastUpload = readLastUploadTime()
 	for {
-		log.Debug("开始扫描...")
+		lc += 1
+		log.Debug("loop: ", lc, "开始扫描...")
 		changedTsmfilesByAccount := getChangedTsmfilesByAccount()
 		if len(changedTsmfilesByAccount) == 0 {
 			log.Debug("无文件变化")

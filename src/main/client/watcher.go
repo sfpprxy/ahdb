@@ -37,6 +37,9 @@ func filterChangedTsmFilesByAccount(tsmfilesByAccount map[string]string) map[str
 	for a, f := range tsmfilesByAccount {
 		info, e := os.Stat(f)
 		check(e, a)
+		if e != nil {
+			continue
+		}
 		durSinceChanged := time.Now().Sub(info.ModTime())
 		if durSinceChanged.Minutes() < 10 {
 			changedTsmfilesByAccount[a] = f
