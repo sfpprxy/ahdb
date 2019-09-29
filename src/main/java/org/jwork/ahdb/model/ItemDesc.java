@@ -3,10 +3,11 @@ package org.jwork.ahdb.model;
 public class ItemDesc {
     public String id;
     public String name;
-    public Integer lv;
-    public Integer g;
-    public Integer s;
-    public Integer c;
+    public Integer itemLv;
+    public Integer requireLv;
+    public Integer vendorBuy;
+    public Integer vendorSell;
+    public String icon;
 
     public String getId() {
         return id;
@@ -26,50 +27,67 @@ public class ItemDesc {
         return this;
     }
 
-    public Integer getLv() {
-        return lv;
+    public Integer getItemLv() {
+        return itemLv;
     }
 
-    public ItemDesc setLv(Integer lvcc) {
-        lv = lvcc;
+    public ItemDesc setItemLv(Integer itemLvcc) {
+        itemLv = itemLvcc;
         return this;
     }
 
-    public Integer getG() {
-        return g;
+    public Integer getRequireLv() {
+        return requireLv;
     }
 
-    public ItemDesc setG(Integer gcc) {
-        g = gcc;
+    public ItemDesc setRequireLv(Integer requireLvcc) {
+        requireLv = requireLvcc;
         return this;
     }
 
-    public Integer getS() {
-        return s;
+    public Integer getVendorBuy() {
+        return vendorBuy;
     }
 
-    public ItemDesc setS(Integer scc) {
-        s = scc;
+    public ItemDesc setVendorBuy(Integer vendorBuycc) {
+        vendorBuy = vendorBuycc;
         return this;
     }
 
-    public Integer getC() {
-        return c;
+    public Integer getVendorSell() {
+        return vendorSell;
     }
 
-    public ItemDesc setC(Integer ccc) {
-        c = ccc;
+    public ItemDesc setVendorSell(Integer vendorSellcc) {
+        vendorSell = vendorSellcc;
+        return this;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public ItemDesc setIcon(String iconcc) {
+        icon = iconcc;
         return this;
     }
 
     @Override
     public String toString() {
+        Integer vdBuy = 0;
+        if (vendorBuy == null) {
+            vdBuy = 0;
+        }
         return "ItemDesc" +
                 " " + id +
                 " " + name +
-                " " + lv +
-                " " + g +
-                " " + s +
-                " " + c + " ";
+                " " + itemLv +
+                " " + requireLv +
+//                " " + vdBuy % 1 +
+//                " " + vdBuy % 1 +
+//                " " + vdBuy % 1 +
+                " " + (vendorSell/10000) +"g"+
+                " " + (vendorSell/100) % 100 +"s"+
+                " " + (vendorSell/1) % 100 + "c"+" ";
     }
 }

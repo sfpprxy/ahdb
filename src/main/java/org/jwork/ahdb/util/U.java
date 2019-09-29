@@ -1,9 +1,10 @@
 package org.jwork.ahdb.util;
 
+import com.google.gson.Gson;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -11,6 +12,8 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class U {
+
+    public static Gson gson = new Gson();
 
     public static String fixedLenStr(String string, int fixedLen) {
         return fixedLenStr(string, fixedLen, false);

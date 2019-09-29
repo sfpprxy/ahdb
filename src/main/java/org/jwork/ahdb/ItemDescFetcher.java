@@ -27,24 +27,29 @@ public class ItemDescFetcher {
 
         Element p2 = Objects.requireNonNull(doc).getElementById("main-contents");
         Element p3 = p2.getElementsByClass("text").first();
-        Element eName = p3.select("h1").first();
+        Element eName = p3.select("h11").first();
         Element eDesc = p3.getElementsByTag("noscript").first();
 
         Node eLv = eDesc.select("span.q").first().childNodes().get(3);
         Element eg = eDesc.select("span.moneygold").first();
         Element es = eDesc.select("span.moneysilver").first();
         Element ec = eDesc.select("span.moneycopper").first();
+        Element eIcon = doc.selectFirst("link[rel=\"image_src\"]");
 
-        String name = eName.text();
-        int lv = Integer.valueOf(eLv.toString());
+        String name = Try(eName::text).getOrElse("unknowName");
+        int ilv = Try(() -> Integer.valueOf(eLv.toString())).getOrElse(0);
         int g = Try(() -> Integer.valueOf(eg.text())).getOrElse(0);
         int s = Try(() -> Integer.valueOf(es.text())).getOrElse(0);
         int c = Try(() -> Integer.valueOf(ec.text())).getOrElse(0);
+        String icon = eIcon.attr("href");
 
         return new ItemDesc()
                 .setId(id)
                 .setName(name)
-                .setLv(lv)
-                .setG(g).setS(s).setC(c);
+                .setItemLv(ilv)
+                .setRequireLv(null)
+                .setVendorBuy(null)
+                .setVendorSell(c + 100*s + 10000*g)
+                .setIcon(icon);
     }
 }
