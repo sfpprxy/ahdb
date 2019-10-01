@@ -11,6 +11,7 @@ public class ItemDescFetcherTest {
         ItemDesc id2 = ItemDescFetcher.getDesc("8899");
         ItemDesc id3 = ItemDescFetcher.getDesc("2447");
         System.out.println();
+        System.out.println();
         System.out.println(id1);
         System.out.println(id1.vendorSell);
         System.out.println(id2);

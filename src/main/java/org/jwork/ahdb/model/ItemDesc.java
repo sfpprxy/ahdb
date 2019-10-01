@@ -3,6 +3,8 @@ package org.jwork.ahdb.model;
 public class ItemDesc {
     public String id;
     public String name;
+    public String itemClass;
+    public String subClass;
     public Integer itemLv;
     public Integer requireLv;
     public Integer vendorBuy;
@@ -15,6 +17,24 @@ public class ItemDesc {
 
     public ItemDesc setId(String idcc) {
         id = idcc;
+        return this;
+    }
+
+    public String getItemClass() {
+        return itemClass;
+    }
+
+    public ItemDesc setItemClass(String itemClasscc) {
+        itemClass = itemClasscc;
+        return this;
+    }
+
+    public String getSubClass() {
+        return subClass;
+    }
+
+    public ItemDesc setSubClass(String subClasscc) {
+        subClass = subClasscc;
         return this;
     }
 
@@ -81,6 +101,8 @@ public class ItemDesc {
         return "ItemDesc" +
                 " " + id +
                 " " + name +
+                " " + itemClass +
+                " " + subClass +
                 " " + itemLv +
                 " " + requireLv +
 //                " " + vdBuy % 1 +
