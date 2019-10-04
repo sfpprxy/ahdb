@@ -9,11 +9,11 @@ public class AhdbException extends RuntimeException {
         super(message);
     }
 
-    public AhdbException(String message, Throwable cause) {
+    public AhdbException(String message, Exception cause) {
         super(message, cause);
     }
 
-    public AhdbException(Throwable cause) {
+    public AhdbException(Exception cause) {
         super(cause);
     }
 }

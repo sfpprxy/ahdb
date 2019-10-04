@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 public class RawData {
 
     @Id
-    public java.sql.Timestamp time;
+    public Timestamp time;
     public String type;
     public String accountId;
     public String rawStr;

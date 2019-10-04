@@ -27,7 +27,7 @@ public class RawDataSaveService {
                     .setType(e.type)
                     .setRawStr(gson.toJson(e.valuableData));
             rawDataRepository.save(rawData);
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             throw new AhdbException("save raw data fail: " + e, ex);
         }
     }

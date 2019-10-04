@@ -29,7 +29,7 @@ public class ValuableDataParser {
                         .setNumAuctions(Integer.valueOf(sl.get(3)))
                         .setQuantity(Integer.valueOf(sl.get(4)))
                         .setLastScan(Integer.valueOf(sl.get(5)));
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 log.error("parse to ItemScan fail: " + s, e);
                 return new ItemScan();
             }

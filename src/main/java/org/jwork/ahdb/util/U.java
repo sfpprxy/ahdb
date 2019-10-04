@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -26,8 +27,6 @@ public class U {
         } else {
             pad = "%1$";
         }
-
-//        System.out.println(string +" "+ length(string) +" "+ fixedLen);
 
         int padLen;
         int cnStrAmend = length(string) - string.length();
@@ -153,9 +152,25 @@ public class U {
         return contentBuilder.toString();
     }
 
+    public static Timer newTimer() {
+        return new Timer();
+    }
+
+    public static class Timer {
+        long start;
+        public Timer() {
+            start = System.currentTimeMillis();
+        }
+
+        public double getTime() {
+            long dur = System.currentTimeMillis() - start;
+            long sec = Duration.ofMillis(dur).getSeconds();
+            return sec;
+        }
+    }
+
     public static void main(String[] args) {
         System.out.println(fixedLenStr("asd", 5));
         System.out.println(fixedLenStr("asd", 5, true));
     }
-
 }

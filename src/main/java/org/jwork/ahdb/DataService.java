@@ -14,6 +14,9 @@ public class DataService {
 
     @Autowired
     RawDataSaveService rawDataSaveService;
+    @Autowired
+    ItemDescSaveService itemDescSaveService;
+
 
     public Boolean process(List<ValuableDataByAccount> valuableDataByAccount) {
         valuableDataByAccount.forEach(dataByA -> {
@@ -26,11 +29,7 @@ public class DataService {
             }
             List<ItemScan> lis = ValuableDataParser.getItemScanList(dataByA.valuableData);
 
-            // TODO 2. update items desc for AHDB
-            boolean exist = false; // query db, check is.itemString exist
-            if (!exist) {
-                // save to db
-            }
+            itemDescSaveService.save(lis);
 
             // TODO 3. save new metric scan data to AHDB
 
