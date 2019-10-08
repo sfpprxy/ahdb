@@ -16,13 +16,14 @@ public class DataService {
     RawDataSaveService rawDataSaveService;
     @Autowired
     ItemDescSaveService itemDescSaveService;
+    @Autowired
+    ItemScanService itemScanService;
 
-
-    public Boolean process(List<ValuableDataByAccount> valuableDataByAccount) {
+    public Boolean receive(List<ValuableDataByAccount> valuableDataByAccount) {
         valuableDataByAccount.forEach(dataByA -> {
             Timestamp createTime = new Timestamp(System.currentTimeMillis());
 
-            rawDataSaveService.save(createTime, dataByA);
+            rawDataSaveService.save(dataByA, createTime);
 
             if (U.match("debug", dataByA.type)) {
                 return;
@@ -31,8 +32,7 @@ public class DataService {
 
             itemDescSaveService.save(lis);
 
-            // TODO 3. save new metric scan data to AHDB
-
+            itemScanService.save(lis, createTime);
         });
         return true;
     }

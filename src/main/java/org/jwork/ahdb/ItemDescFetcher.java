@@ -29,7 +29,7 @@ public class ItemDescFetcher {
             Element eName = p3.select("h1").first();
             Element eDesc = p3.getElementsByTag("noscript").first();
 
-            Node eLv = eDesc.select("span.q").first().childNodes().get(3);
+            Node eLv = Try(() -> eDesc.select("span.q").first().childNodes().get(3)).getOrNull();
             Element eg = eDesc.select("span.moneygold").first();
             Element es = eDesc.select("span.moneysilver").first();
             Element ec = eDesc.select("span.moneycopper").first();
@@ -56,8 +56,8 @@ public class ItemDescFetcher {
                     .setIcon(icon);
 
         } catch (Exception ex) {
-            log.error("getDesc fail item id {} name {} ", id, name, ex);
-            return new ItemDesc();
+            log.error("getDesc fail item itemId {} name {} ", id, name, ex);
+            return null;
         }
     }
 

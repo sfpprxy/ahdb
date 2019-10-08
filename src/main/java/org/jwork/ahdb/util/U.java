@@ -158,12 +158,18 @@ public class U {
 
     public static class Timer {
         long start;
+        long last;
         public Timer() {
             start = System.currentTimeMillis();
         }
 
         public double getTime() {
-            long dur = System.currentTimeMillis() - start;
+            if (last == 0) {
+                last = start;
+            }
+            long now = System.currentTimeMillis();
+            long dur = now - last;
+            last = now;
             long sec = Duration.ofMillis(dur).getSeconds();
             return sec;
         }

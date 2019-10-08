@@ -1,20 +1,32 @@
 package org.jwork.ahdb.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import java.io.Serializable;
+import java.sql.Timestamp;
+
+@Entity
+@IdClass(ItemScan.IdClass.class)
 public class ItemScan {
-    // itemInteger,minBuyout,marketValue,numAuctions,quantity,lastScan
-    public String itemString;
+    // itemString,minBuyout,marketValue,numAuctions,quantity,lastScan
+    @Id
+    public String itemId;
     public Integer minBuyout;
     public Double marketValue;
     public Integer numAuctions;
     public Integer quantity;
-    public Integer lastScan;
+    @Id
+    public Timestamp scanTime;
+    public String realm;
+    public Timestamp addTime;
 
-    public String getItemString() {
-        return itemString;
+    public String getItemId() {
+        return itemId;
     }
 
-    public ItemScan setItemString(String itemStringcc) {
-        itemString = itemStringcc;
+    public ItemScan setItemId(String itemIdcc) {
+        itemId = itemIdcc;
         return this;
     }
 
@@ -54,31 +66,72 @@ public class ItemScan {
         return this;
     }
 
-    public Integer getLastScan() {
-        return lastScan;
+    public Timestamp getScanTime() {
+        return scanTime;
     }
 
-    public ItemScan setLastScan(Integer lastScancc) {
-        lastScan = lastScancc;
+    public ItemScan setScanTime(Timestamp scanTimecc) {
+        scanTime = scanTimecc;
         return this;
+    }
+
+    public String getRealm() {
+        return realm;
+    }
+
+    public ItemScan setRealm(String realmcc) {
+        realm = realmcc;
+        return this;
+    }
+
+    public Timestamp getAddTime() {
+        return addTime;
+    }
+
+    public ItemScan setAddTime(Timestamp addTimecc) {
+        addTime = addTimecc;
+        return this;
+    }
+
+    static class IdClass implements Serializable {
+        public String itemId;
+        public Timestamp scanTime;
+
+        public String getItemId() {
+            return itemId;
+        }
+
+        public IdClass setItemId(String itemIdcc) {
+            itemId = itemIdcc;
+            return this;
+        }
+
+        public Timestamp getScanTime() {
+            return scanTime;
+        }
+
+        public IdClass setScanTime(Timestamp scanTimecc) {
+            scanTime = scanTimecc;
+            return this;
+        }
     }
 
     @Override
     public String toString() {
         return "ItemScan "+
-                itemString + " " +
+                itemId + " " +
                 minBuyout.toString() + " " +
                 marketValue.toString() + " " +
                 numAuctions.toString() + " " +
                 quantity.toString() + " " +
-                lastScan.toString();
+                scanTime.toString();
 //        return "ItemScan{" +
 //                "itemInteger='" + itemInteger + '\'' +
 //                ", minBuyout='" + minBuyout + '\'' +
 //                ", marketValue='" + marketValue + '\'' +
 //                ", numAuctions='" + numAuctions + '\'' +
 //                ", quantity='" + quantity + '\'' +
-//                ", lastScan='" + lastScan + '\'' +
+//                ", scanTime='" + scanTime + '\'' +
 //                '}';
     }
 }

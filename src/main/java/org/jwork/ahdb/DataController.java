@@ -18,7 +18,7 @@ public class DataController {
 
     @PostMapping(value="/push")
     public String receive(@RequestBody List<ValuableDataByAccount> valuableDataByAccount) {
-        Boolean success = dataService.process(io.vavr.collection.List.ofAll(valuableDataByAccount));
+        Boolean success = dataService.receive(io.vavr.collection.List.ofAll(valuableDataByAccount));
         if (success) {
             return "OK";
         }

@@ -6,6 +6,7 @@ import org.jwork.ahdb.model.ValuableData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Timestamp;
 import java.util.Objects;
 
 public class ValuableDataParser {
@@ -23,17 +24,17 @@ public class ValuableDataParser {
             try {
                 List<String> sl = List.of(s.split(","));
                 return new ItemScan()
-                        .setItemString(sl.get(0).substring(2))
+                        .setItemId(sl.get(0).substring(2))
                         .setMinBuyout(Integer.valueOf(sl.get(1)))
                         .setMarketValue(Double.valueOf(sl.get(2)))
                         .setNumAuctions(Integer.valueOf(sl.get(3)))
                         .setQuantity(Integer.valueOf(sl.get(4)))
-                        .setLastScan(Integer.valueOf(sl.get(5)));
-            } catch (Exception e) {
-                log.error("parse to ItemScan fail: " + s, e);
-                return new ItemScan();
+                        .setScanTime(new Timestamp(Long.valueOf(sl.get(5))*1000));
+            } catch (Exception ex) {
+                log.error("parse to ItemScan fail: " + s, ex);
+                return null;
             }
-        });
+        }).filter(Objects::nonNull);
 
         return itemScanL;
     }

@@ -24,6 +24,8 @@ public class ItemDescSaveServiceTest {
     RawDataRepository rawDataRepository;
     @Autowired
     ItemDescRepository itemDescRepository;
+    @Autowired
+    ItemDescSaveService itemDescSaveService;
 
     public List<ItemScan> parseRawFromDB() {
         Timestamp ts = Timestamp.valueOf(LocalDateTime.now().minusDays(1));
@@ -48,16 +50,27 @@ public class ItemDescSaveServiceTest {
         poll.submit(() ->
                 lis.toJavaParallelStream().forEach(is -> {
                     try {
-                        int size = itemDescRepository.findAllById(is.itemString).size();
-                        if (size < 1) {
-                            ItemDesc desc = ItemDescFetcher.getDesc(is.itemString);
+                        boolean exist = itemDescRepository.findById(is.itemId).isPresent();
+                        if (!exist) {
+                            log.debug("BUCUNZAI");
+                            ItemDesc desc = ItemDescFetcher.getDesc(is.itemId);
                             itemDescRepository.save(desc);
+                        } else {
+                            log.debug("GOOD");
                         }
                     } catch (Exception ex) {
-                        log.debug("save ItemDesc id: {} fail: ", is.itemString, ex);
+//                        log.debug("save ItemDesc itemId: {} fail: ", is.itemId, ex);
                     }
                 })
         ).get();
+        log.debug("time: {}", t.getTime());
+    }
+
+    @Test
+    public void realSave() {
+        U.Timer t = U.newTimer();
+        List<ItemScan> lis = parseRawFromDB();
+        itemDescSaveService.save(lis);
         log.debug("time: {}", t.getTime());
     }
 }

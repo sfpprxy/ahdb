@@ -53,3 +53,21 @@ create table item_desc
 
 create index item_desc_id_idx
     on item_desc (id);
+
+-- date 2019-10-08 09:17:41
+create table item_scan
+(
+    item_id text not null,
+    min_buyout integer not null,
+    market_value integer not null,
+    num_auctions integer not null,
+    quantity integer not null,
+    scan_time timestamp with time zone not null,
+    realm text not null,
+    add_time timestamp with time zone not null
+);
+
+SELECT create_hypertable('item_scan', 'scan_time');
+
+create index item_scan_scan_time_item_id_idx
+    on item_scan (scan_time DESC, item_id);
