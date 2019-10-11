@@ -27,6 +27,9 @@ public class ItemScanServiceTest {
     @Autowired
     ItemScanService itemScanService;
 
+    @Autowired
+    ItemDescSaveService itemDescSaveService;
+
     public List<ItemScan> parseRawFromDB() {
         Timestamp ts = Timestamp.valueOf(LocalDateTime.now().minusDays(1));
 
@@ -45,5 +48,23 @@ public class ItemScanServiceTest {
     @Test
     public void save() {
         itemScanService.save(parseRawFromDB(), new Timestamp(System.currentTimeMillis()));
+    }
+
+    @Test
+    public void saveAllFromRaw() {
+        rawDataRepository.findAll()
+                .forEach(rawData -> {
+                    try {
+                        ValuableData dataByA = U.gson.fromJson(rawData.rawStr, ValuableData.class);
+                        List<ItemScan> lis = ValuableDataParser.getItemScanList(dataByA);
+                        U.Timer t = U.newTimer();
+                        itemDescSaveService.save(lis);
+                        log.debug("itemDescSaveService.save time: {}", t.getTime());
+                        itemScanService.save(lis, new Timestamp(System.currentTimeMillis()));
+                        log.debug("itemScanService.save time: {}", t.getTime());
+                    } catch (Exception ex) {
+                        log.error("saveAll one fail", ex);
+                    }
+                });
     }
 }
