@@ -34,7 +34,9 @@ public class DataService {
             }
             List<ItemScan> lis = ValuableDataParser.getItemScanList(dataByA.valuableData);
 
-            itemDescSaveService.save(lis);
+            new Thread(() -> {
+                itemDescSaveService.save(lis);
+            }).start();
 
             itemScanService.save(lis, createTime);
         });

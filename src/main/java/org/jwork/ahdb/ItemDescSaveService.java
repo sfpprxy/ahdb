@@ -22,6 +22,7 @@ public class ItemDescSaveService {
     ItemDescRepository itemDescRepository;
 
     public void save(List<ItemScan> lis) {
+        log.debug("itemDescSaveService.save start");
         Set<String> dbIds = List.ofAll(itemDescRepository.findAllItemId()).toSet();
         Set<String> isIds = lis.map(is -> is.itemId).toSet();
         Set<String> newIds = isIds.diff(dbIds);
