@@ -52,6 +52,7 @@ public class ItemScanServiceTest {
 
     @Test
     public void saveAllFromRaw() {
+        // TODO: save all
         rawDataRepository.findAll()
                 .forEach(rawData -> {
                     try {

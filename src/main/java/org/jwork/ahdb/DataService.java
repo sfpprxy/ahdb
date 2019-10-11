@@ -29,6 +29,7 @@ public class DataService {
             rawDataSaveService.save(dataByA, createTime);
 
             if (U.match("debug", dataByA.type)) {
+                log.debug("received debug rawData");
                 return;
             }
             List<ItemScan> lis = ValuableDataParser.getItemScanList(dataByA.valuableData);
