@@ -77,7 +77,10 @@ public class ItemDescFetcher {
             Integer itemClassIndex = Integer.valueOf(sp[2]);
             Integer subClassIndex = Integer.valueOf(sp[3]);
 
-            List itemClassList = List.ofAll(itemCata).map(e -> List.ofAll(e)).find(e -> {
+            List<java.util.List> itemClassLJava = List.ofAll(itemCata);
+            List<List> itemClassLVavr = itemClassLJava.map(e -> List.ofAll(e));
+
+            List itemClassList = itemClassLVavr.find(e -> {
                 Double d = (Double) e.get(0);
                 return U.match(itemClassIndex, d.intValue());
             }).get();
