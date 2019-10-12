@@ -170,8 +170,8 @@ public class U {
             long now = System.currentTimeMillis();
             long dur = now - last;
             last = now;
-            long sec = Duration.ofMillis(dur).getSeconds();
-            return sec;
+            double sec = Duration.ofMillis(dur).getNano();
+            return sec/100000000;
         }
     }
 
