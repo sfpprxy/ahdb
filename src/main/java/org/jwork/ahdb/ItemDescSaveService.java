@@ -21,13 +21,17 @@ public class ItemDescSaveService {
     @Autowired
     ItemDescRepository itemDescRepository;
 
+    private ForkJoinPool poll;
+
     public void save(List<ItemScan> lis) {
         log.debug("itemDescSaveService.save start");
         Set<String> dbIds = List.ofAll(itemDescRepository.findAllItemId()).toSet();
         Set<String> isIds = lis.map(is -> is.itemId).toSet();
         Set<String> newIds = isIds.diff(dbIds);
 
-        ForkJoinPool poll = new ForkJoinPool(64);
+        if (poll == null) {
+            poll = new ForkJoinPool(64);
+        }
         log.debug("Pool Submit");
         poll.submit(() ->
                 {
