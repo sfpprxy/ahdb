@@ -16,7 +16,7 @@ public class DataService {
     private static final Logger log = LoggerFactory.getLogger(DataService.class);
 
     @Autowired
-    RawDataSaveService rawDataSaveService;
+    RawDataService rawDataService;
     @Autowired
     ItemDescSaveService itemDescSaveService;
     @Autowired
@@ -26,7 +26,7 @@ public class DataService {
         valuableDataByAccount.forEach(dataByA -> {
             Timestamp createTime = new Timestamp(System.currentTimeMillis());
 
-            rawDataSaveService.save(dataByA, createTime);
+            rawDataService.save(dataByA, createTime);
 
             if (U.match("debug", dataByA.type)) {
                 log.debug("received debug rawData");

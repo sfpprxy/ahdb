@@ -15,8 +15,10 @@ public class DataController {
 
     @Autowired
     DataService dataService;
+    @Autowired
+    RawDataService rawDataService;
 
-    @PostMapping(value="/push")
+    @PostMapping(value = "/push")
     public String receive(@RequestBody List<ValuableDataByAccount> valuableDataByAccount) {
         Boolean success = dataService.receive(io.vavr.collection.List.ofAll(valuableDataByAccount));
         if (success) {
@@ -25,4 +27,9 @@ public class DataController {
         return "ERR";
     }
 
+    @GetMapping(value = "/saveAllFromRaw")
+    public String saveAllFromRaw() {
+        rawDataService.saveAllFromRaw();
+        return "OK";
+    }
 }
