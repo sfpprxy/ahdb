@@ -18,8 +18,10 @@ public class ItemScanService {
     @Autowired
     ItemScanRepository itemScanRepository;
 
-    public void save(List<ItemScan> lis, Timestamp createTime) {
-        Optional<ItemScan> maybeis = itemScanRepository.findFirstByScanTime(lis.head().scanTime);
+    public Boolean save(List<ItemScan> lis, Timestamp createTime) {
+        Timestamp scanTime = lis.head().scanTime;
+        Timestamp shouldNotExist = Timestamp.valueOf(scanTime.toLocalDateTime().minusMinutes(5));
+        Optional<ItemScan> maybeis = itemScanRepository.findFirstByScanTimeAfter(shouldNotExist);
         if (!maybeis.isPresent()) {
             lis.forEach(is -> {
                 is.setRealm("觅心者-部落").setAddTime(createTime);
@@ -28,6 +30,10 @@ public class ItemScanService {
             log.debug("start itemScanRepository.saveAll");
             itemScanRepository.saveAll(lis);
             log.debug("itemScanRepository.saveAll time: {}", t.getTime());
+            return true;
+        } else {
+            log.debug("scanTime {} last5MinScanTime {}", scanTime, maybeis.get().scanTime);
         }
+        return false;
     }
 }

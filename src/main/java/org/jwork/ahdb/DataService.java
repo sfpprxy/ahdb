@@ -34,11 +34,13 @@ public class DataService {
             }
             List<ItemScan> lis = ValuableDataParser.getItemScanList(dataByA.valuableData);
 
-            new Thread(() -> {
-                itemDescSaveService.save(lis);
-            }).start();
+            Boolean shouldSave = itemScanService.save(lis, createTime);
 
-            itemScanService.save(lis, createTime);
+            if (shouldSave) {
+                new Thread(() -> {
+                    itemDescSaveService.save(lis);
+                }).start();
+            }
         });
         return true;
     }

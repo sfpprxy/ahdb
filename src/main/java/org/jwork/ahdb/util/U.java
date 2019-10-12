@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -175,8 +176,47 @@ public class U {
         }
     }
 
+    public static Counter newCounter(int total) {
+        return new Counter(total);
+    }
+
+    public static class Counter {
+        int total;
+        AtomicInteger count = new AtomicInteger();
+        int progress;
+        boolean isBigJob;
+
+        public Counter(int total) {
+            this.total = total;
+        }
+
+        public Counter bigJob(boolean isBigJob) {
+            this.isBigJob = isBigJob;
+            return this;
+        }
+
+        public void addOne() {
+            count.addAndGet(1);
+        }
+
+        public Optional<String> check() {
+            double p = (count.doubleValue() / total);
+            int intp = (int) (p * 100);
+            if (intp % 10 == 0 && intp > progress) {
+                progress = intp;
+                return Optional.of(intp + "%");
+            }
+            return Optional.empty();
+        }
+
+    }
+
     public static void main(String[] args) {
-        System.out.println(fixedLenStr("asd", 5));
-        System.out.println(fixedLenStr("asd", 5, true));
+        Counter c = U.newCounter(17233);
+        for (int i = 0; i < 17233; i++) {
+            c.addOne();
+            U.sleep(1);
+        }
+
     }
 }
