@@ -10,6 +10,9 @@ cp ./src/main/resources/application.properties.prod ./src/main/resources/applica
 echo '> kill old'
 kill $(cat ./AHDBPID)
 
-echo '> start'
+echo '> package'
+mvn -Dmaven.test.skip=true package
 
-nohup mvn clean spring-boot:run -Dprofile=test -Dserver.port=9999 >> ./ahdbserver.log &
+echo '> start'
+nohup java -Dprofile=prod -Dserver.port=9999 \
+-jar target/ahdb-0.0.1-SNAPSHOT.jar  >> ./ahdbserver.log &

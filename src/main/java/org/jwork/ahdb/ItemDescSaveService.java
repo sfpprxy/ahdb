@@ -10,9 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ForkJoinPool;
-import java.util.stream.Collectors;
+import java.util.concurrent.LinkedBlockingQueue;
 
 @Service
 public class ItemDescSaveService {
@@ -21,28 +22,47 @@ public class ItemDescSaveService {
     @Autowired
     ItemDescRepository itemDescRepository;
 
-    private ForkJoinPool poll;
+    private ForkJoinPool pool;
+    private BlockingQueue<ItemDesc> descQueue;
 
     public void save(List<ItemScan> lis) {
-        log.debug("itemDescSaveService.save start");
         Set<String> dbIds = List.ofAll(itemDescRepository.findAllItemId()).toSet();
         Set<String> isIds = lis.map(is -> is.itemId).toSet();
         Set<String> newIds = isIds.diff(dbIds);
 
-        if (poll == null) {
-            poll = new ForkJoinPool(64);
+        if (pool == null) {
+            pool = new ForkJoinPool(64);
         }
-        log.debug("Pool Submit");
-        poll.submit(() ->
-                {
-                    U.Timer t1 = U.newTimer();
-                    java.util.List<ItemDesc> newlis = newIds.toJavaParallelStream()
-                            .map(ItemDescFetcher::getDesc)
-                            .filter(Objects::nonNull)
-                            .collect(Collectors.toList());
-                    log.debug("fetch time: {}", t1.getTime());
-                    itemDescRepository.saveAll(newlis);
-                }
-        );
+        if (descQueue == null) {
+            descQueue = new LinkedBlockingQueue<>();
+            startBatchSaveJob();
+        }
+
+        log.debug("start fetch ItemDesc...");
+        pool.submit(() -> {
+            newIds.toJavaParallelStream()
+                    .forEach(id -> {
+                        ItemDesc desc = ItemDescFetcher.getDesc(id);
+                        if (desc != null) {
+                            try {
+                                descQueue.put(desc);
+                            } catch (Exception ex) {
+                                log.error("put queue fail, item id: {}", desc.id, ex);
+                            }
+                        }
+                    });
+        });
+    }
+
+    public void startBatchSaveJob() {
+        log.debug("startBatchSaveJob...");
+        pool.submit(() -> {
+            while (true) {
+                ArrayList<ItemDesc> toSave = new ArrayList<>();
+                descQueue.drainTo(toSave, 2000);
+                itemDescRepository.saveAll(toSave);
+                U.sleep(60 * 1000);
+            }
+        });
     }
 }

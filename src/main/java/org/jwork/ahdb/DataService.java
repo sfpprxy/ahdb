@@ -22,27 +22,29 @@ public class DataService {
     @Autowired
     ItemScanService itemScanService;
 
-    public Boolean receive(List<ValuableDataByAccount> valuableDataByAccount) {
-        valuableDataByAccount.forEach(dataByA -> {
+    public Boolean receive(List<ValuableDataByAccount> lvaluableDataByAccount) {
+        lvaluableDataByAccount.forEach(dataByA -> {
             Timestamp createTime = new Timestamp(System.currentTimeMillis());
 
             rawDataService.save(dataByA, createTime);
 
-            if (U.match("debug", dataByA.type)) {
-                log.debug("received debug rawData");
-                return;
-            }
-            List<ItemScan> lis = ValuableDataParser.getItemScanList(dataByA.valuableData);
-
-            Boolean shouldSave = itemScanService.save(lis, createTime);
-
-            if (shouldSave) {
-                new Thread(() -> {
-                    itemDescSaveService.save(lis);
-                }).start();
-            }
+            processRaw(dataByA, createTime);
         });
         return true;
+    }
+
+    public void processRaw(ValuableDataByAccount dataByA, Timestamp createTimecc) {
+        if (U.match("debug", dataByA.type)) {
+            log.debug("debug rawData received");
+            return;
+        }
+        List<ItemScan> lis = ValuableDataParser.getItemScanList(dataByA.valuableData);
+
+        Boolean shouldSave = itemScanService.save(lis, createTimecc);
+
+        if (shouldSave) {
+            itemDescSaveService.save(lis);
+        }
     }
 
 }

@@ -29,7 +29,6 @@ public class DataController {
 
     @GetMapping(value = "/saveAllFromRaw")
     public String saveAllFromRaw() {
-        rawDataService.saveAllFromRaw();
-        return "OK";
+        return "ERR";
     }
 }

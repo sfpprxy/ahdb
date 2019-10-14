@@ -66,12 +66,14 @@ public class ItemScanServiceTest {
                         U.Timer t = U.newTimer();
                         itemDescSaveService.save(lis);
                         log.debug("itemDescSaveService.save time: {}", t.getTime());
-                        itemScanService.save(lis, new Timestamp(System.currentTimeMillis()));
-                        log.debug("itemScanService.save time: {}", t.getTime());
+//                        itemScanService.save(lis, new Timestamp(System.currentTimeMillis()));
+//                        log.debug("itemScanService.save time: {}", t.getTime());
                     } catch (Exception ex) {
                         log.error("saveAll one fail", ex);
                     }
                 });
+        log.debug("Submit finish");
+        U.sleep(9999999);
     }
 
     @Test

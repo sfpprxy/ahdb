@@ -1,6 +1,7 @@
 package org.jwork.ahdb;
 
-import org.jwork.ahdb.model.*;
+import org.jwork.ahdb.model.RawData;
+import org.jwork.ahdb.model.ValuableDataByAccount;
 import org.jwork.ahdb.util.U;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Service
 public class RawDataService {
@@ -15,12 +17,6 @@ public class RawDataService {
 
     @Autowired
     RawDataRepository rawDataRepository;
-
-    @Autowired
-    ItemScanService itemScanService;
-
-    @Autowired
-    ItemDescSaveService itemDescSaveService;
 
     public void save(ValuableDataByAccount dataByA, Timestamp createTime) {
         try {
@@ -36,20 +32,8 @@ public class RawDataService {
         }
     }
 
-    public void saveAllFromRaw() {
-        rawDataRepository.findAll()
-                .forEach(rawData -> {
-                    try {
-                        ValuableData dataByA = U.gson.fromJson(rawData.rawStr, ValuableData.class);
-                        io.vavr.collection.List<ItemScan> lis = ValuableDataParser.getItemScanList(dataByA);
-                        U.Timer t = U.newTimer();
-                        itemDescSaveService.save(lis);
-                        log.debug("itemDescSaveService.save time: {}", t.getTime());
-                        itemScanService.save(lis, new Timestamp(System.currentTimeMillis()));
-                        log.debug("itemScanService.save time: {}", t.getTime());
-                    } catch (Exception ex) {
-                        log.error("saveAll one fail", ex);
-                    }
-                });
+    public List<RawData> getAll() {
+        return rawDataRepository.findAll();
     }
+
 }
