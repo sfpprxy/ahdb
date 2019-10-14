@@ -60,7 +60,10 @@ public class ItemDescSaveService {
             while (true) {
                 ArrayList<ItemDesc> toSave = new ArrayList<>();
                 descQueue.drainTo(toSave, 2000);
-                itemDescRepository.saveAll(toSave);
+                if (!toSave.isEmpty()) {
+                    itemDescRepository.saveAll(toSave);
+                    log.info("{} new ItemDesc added", toSave.size());
+                }
                 U.sleep(60 * 1000);
             }
         });
