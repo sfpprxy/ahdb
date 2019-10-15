@@ -20,4 +20,4 @@ java -Dprofile=debug -Dserver.port=9999 \
 -Dcom.sun.management.jmxremote.authenticate=false \
 -Dcom.sun.management.jmxremote.ssl=false \
 -Djava.rmi.server.hostname=123.206.124.78 \
--jar target/ahdb-0.0.2-SNAPSHOT.jar
+-jar target/server-0.0.2-SNAPSHOT.jar

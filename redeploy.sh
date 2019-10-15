@@ -15,4 +15,4 @@ mvn -Dmaven.test.skip=true package
 
 echo '> start'
 nohup java -Dprofile=prod -Dserver.port=9999 \
--jar target/ahdb-0.0.2-SNAPSHOT.jar  >> ./ahdbserver.log &
+-jar target/server-0.0.2-SNAPSHOT.jar  >> ./ahdbserver.log &
