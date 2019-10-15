@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 
 @Service
-public class DataService {
-    private static final Logger log = LoggerFactory.getLogger(DataService.class);
+public class ReceiveService {
+    private static final Logger log = LoggerFactory.getLogger(ReceiveService.class);
 
     @Autowired
     RawDataService rawDataService;
     @Autowired
-    ItemDescSaveService itemDescSaveService;
+    ItemDescService itemDescService;
     @Autowired
     ItemScanService itemScanService;
 
@@ -43,7 +43,7 @@ public class DataService {
         Boolean shouldSave = itemScanService.save(lis, createTimecc);
 
         if (shouldSave) {
-            itemDescSaveService.save(lis);
+            itemDescService.save(lis);
         }
     }
 

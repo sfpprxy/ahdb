@@ -10,17 +10,17 @@ import java.util.List;
 
 @RequestMapping("/ahdb")
 @RestController
-public class DataController {
-    private static final Logger log = LoggerFactory.getLogger(DataController.class);
+public class ReceiveController {
+    private static final Logger log = LoggerFactory.getLogger(ReceiveController.class);
 
     @Autowired
-    DataService dataService;
+    ReceiveService receiveService;
     @Autowired
     RawDataService rawDataService;
 
     @PostMapping(value = "/push")
     public String receive(@RequestBody List<ValuableDataByAccount> valuableDataByAccount) {
-        Boolean success = dataService.receive(io.vavr.collection.List.ofAll(valuableDataByAccount));
+        Boolean success = receiveService.receive(io.vavr.collection.List.ofAll(valuableDataByAccount));
         if (success) {
             return "OK";
         }

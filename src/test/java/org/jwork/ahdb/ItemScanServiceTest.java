@@ -34,7 +34,7 @@ public class ItemScanServiceTest {
     ItemScanService itemScanService;
 
     @Autowired
-    ItemDescSaveService itemDescSaveService;
+    ItemDescService itemDescServiceaa;
 
     public List<ItemScan> parseRawFromDB() {
         Timestamp ts = Timestamp.valueOf(LocalDateTime.now().minusDays(1));
@@ -64,7 +64,7 @@ public class ItemScanServiceTest {
                         ValuableData dataByA = U.gson.fromJson(rawData.rawStr, ValuableData.class);
                         List<ItemScan> lis = ValuableDataParser.getItemScanList(dataByA);
                         U.Timer t = U.newTimer();
-                        itemDescSaveService.save(lis);
+                        itemDescServiceaa.save(lis);
                         log.debug("itemDescSaveService.save time: {}", t.getTime());
 //                        itemScanService.save(lis, new Timestamp(System.currentTimeMillis()));
 //                        log.debug("itemScanService.save time: {}", t.getTime());

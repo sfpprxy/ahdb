@@ -8,11 +8,11 @@
         <version>2.1.8.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>org.jwork</groupId>
-    <artifactId>ahdb</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <groupId>org.ahdb</groupId>
+    <artifactId>server</artifactId>
+    <version>0.0.2-SNAPSHOT</version>
     <name>ahdb</name>
-    <description>WoW Auction House DB</description>
+    <description>WoW Auction House DB Server</description>
 
     <properties>
         <java.version>8</java.version>

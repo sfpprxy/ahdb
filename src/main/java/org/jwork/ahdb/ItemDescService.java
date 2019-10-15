@@ -16,8 +16,8 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.LinkedBlockingQueue;
 
 @Service
-public class ItemDescSaveService {
-    private static final Logger log = LoggerFactory.getLogger(ItemDescSaveService.class);
+public class ItemDescService {
+    private static final Logger log = LoggerFactory.getLogger(ItemDescService.class);
 
     @Autowired
     ItemDescRepository itemDescRepository;
@@ -44,11 +44,7 @@ public class ItemDescSaveService {
                     .forEach(id -> {
                         ItemDesc desc = ItemDescFetcher.getDesc(id);
                         if (desc != null) {
-                            try {
-                                descQueue.put(desc);
-                            } catch (Exception ex) {
-                                log.error("put queue fail, item id: {}", desc.id, ex);
-                            }
+                            descQueue.offer(desc);
                         }
                     });
         });

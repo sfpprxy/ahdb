@@ -17,15 +17,15 @@ import java.util.concurrent.ForkJoinPool;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ItemDescSaveServiceTest {
-    private static final Logger log = LoggerFactory.getLogger(ItemDescSaveServiceTest.class);
+public class ItemDescServiceTest {
+    private static final Logger log = LoggerFactory.getLogger(ItemDescServiceTest.class);
 
     @Autowired
     RawDataRepository rawDataRepository;
     @Autowired
     ItemDescRepository itemDescRepository;
     @Autowired
-    ItemDescSaveService itemDescSaveService;
+    ItemDescService itemDescServiceaa;
 
     public List<ItemScan> parseRawFromDB() {
         Timestamp ts = Timestamp.valueOf(LocalDateTime.now().minusDays(1));
@@ -70,7 +70,7 @@ public class ItemDescSaveServiceTest {
     public void realSave() {
         U.Timer t = U.newTimer();
         List<ItemScan> lis = parseRawFromDB();
-        itemDescSaveService.save(lis);
+        itemDescServiceaa.save(lis);
         log.debug("time: {}", t.getTime());
     }
 }
