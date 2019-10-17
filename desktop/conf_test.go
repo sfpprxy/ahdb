@@ -7,4 +7,3 @@ import (
 func TestConf(t *testing.T) {
 
 }
-

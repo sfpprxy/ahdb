@@ -5,10 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.ApplicationPidFileWriter;
 
 @SpringBootApplication
-public class AHDBApplication {
+public class AHDBServer {
 
     public static void main(String[] args) {
-        SpringApplication springApplication = new SpringApplication(AHDBApplication.class);
+        SpringApplication springApplication = new SpringApplication(AHDBServer.class);
         springApplication.addListeners(new ApplicationPidFileWriter("./AHDBPID"));
         springApplication.run(args);
     }

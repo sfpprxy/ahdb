@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 public class RawLog {
 
     @Id
-    public java.sql.Timestamp time;
+    public Timestamp time;
     public String type;
     public String rawStr;
 

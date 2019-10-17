@@ -5,12 +5,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.8.RELEASE</version>
+        <version>2.2.0.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.ahdb</groupId>
     <artifactId>ahdbserver</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <name>ahdb</name>
     <description>WoW Auction House DB Server</description>
 

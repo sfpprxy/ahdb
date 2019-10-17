@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class ValuableDataByAccount {
 
-    public java.sql.Timestamp time;
+    public Timestamp time;
     public String type;
     public String accountId;
     public ValuableData valuableData;
