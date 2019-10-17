@@ -9,8 +9,8 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.ahdb</groupId>
-    <artifactId>server</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <artifactId>ahdbserver</artifactId>
+    <version>0.0.2</version>
     <name>ahdb</name>
     <description>WoW Auction House DB Server</description>
 
