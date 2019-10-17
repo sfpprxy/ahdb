@@ -11,7 +11,7 @@ var timeLayout = "2006-01-02 15:04:05"
 
 func getUploadUrl() string {
 	url := "http://123.206.124.78:9999/ahdb/push"
-	if isOnMac() {
+	if onDebug() {
 		url = "http://localhost:9999/ahdb/push"
 	}
 	return url

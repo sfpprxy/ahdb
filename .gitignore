@@ -1,39 +1,25 @@
-HELP.md
+# Maven
 target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**
-!**/src/test/**
+*.ser
+*.ec
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-### IntelliJ IDEA ###
-.idea
+# IntelliJ Idea
+.idea/
+out/
+*.ipr
 *.iws
 *.iml
-*.ipr
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
+# Eclipse
+.classpath
+.project
+.settings/
+.metadata/
 
-### VS Code ###
-.vscode/
+# OS X
 .DS_Store
-/src/main/client/AHDBApp
-/src/main/AHDBApp
 
-/src/main/client/adhb.conf
+/src/main/client/AHDBApp
 /src/main/godemo
 /src/main/client/adhb.json
 /src/main/client/ahdb.log

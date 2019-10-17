@@ -25,9 +25,12 @@ func extractValuableDataByAccount(tsmfilesByAccount map[string]string) []Valuabl
 
 		var typ string
 		if isOnMac() {
-			typ = "debug"
+			typ = "mac"
 		} else {
 			typ = "win"
+		}
+		if onDebug() {
+			typ = "debug"
 		}
 
 		dataByAccount = append(dataByAccount, ValuableDataByAccount{typ, account, ValuableData{charStr, scanStr}})

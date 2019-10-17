@@ -13,7 +13,11 @@ import (
 var log = logrus.New()
 
 func init() {
-	log.SetLevel(logrus.DebugLevel)
+	handleCliInput(os.Args[1:])
+
+	if onDebug() {
+		log.SetLevel(logrus.DebugLevel)
+	}
 	log.SetFormatter(&easy.Formatter{
 		TimestampFormat: "2006-01-02 15:04:05",
 		LogFormat:       "[%lvl%]: %time% - %msg%\r\n",
@@ -68,6 +72,10 @@ func mainui() {
 
 		hideBtn := ui.NewButton("隐藏到托盘")
 		box.Append(hideBtn, true)
+
+		// 选择wow和隐藏按钮并列水平布局, web按钮单独
+		//webBtn := ui.NewButton("藏宝海湾")
+		//box.Append(hideBtn, true)
 
 		chooseBtn.OnClicked(func(*ui.Button) {
 			saveWowPath(ui.OpenFile(mainwin))

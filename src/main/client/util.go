@@ -4,12 +4,18 @@ import (
 	"runtime"
 )
 
+var debugMode = false
+
 func check(args ...interface{}) bool {
 	if args[0] != nil {
 		log.Error(args...)
 		return true
 	}
 	return false
+}
+
+func onDebug() bool {
+	return debugMode
 }
 
 func isOnMac() bool {

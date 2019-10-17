@@ -20,6 +20,7 @@ func upload(data []ValuableDataByAccount) bool {
 
 	body, e := ioutil.ReadAll(resp.Body)
 	check(e)
+	log.Debug(string(body))
 	if string(body) != "OK" {
 		return false
 	}
