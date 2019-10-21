@@ -5,7 +5,7 @@ func handleCliInput(args []string) {
 		return
 	}
 
-	if args[0] == "debug" {
+	if args[0] == "debug" || args[1] == "debug" {
 		debugMode = true
 		log.Debug("DEBUG MODE ON")
 	}

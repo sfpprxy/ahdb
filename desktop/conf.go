@@ -9,12 +9,20 @@ import (
 var confFile = "adhb.json"
 var timeLayout = "2006-01-02 15:04:05"
 
-func getUploadUrl() string {
-	url := "http://123.206.124.78:9999/ahdb/push"
+func getBaseUrl() string {
+	host := "http://123.206.124.78:9999/ahdb"
 	if onDebug() {
-		url = "http://localhost:9999/ahdb/push"
+		host = "http://localhost:9999/ahdb"
 	}
-	return url
+	return host
+}
+
+func getUploadUrl() string {
+	return getBaseUrl() + "/push"
+}
+
+func getBootyBayUrl() string {
+	return getBaseUrl()
 }
 
 func loadConf() (error, Config) {

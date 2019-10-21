@@ -20,7 +20,7 @@ func trayUpdater() {
 			systray.SetIcon(IconGoldWin)
 		}
 
-		systray.SetTooltip("最近上传：" + lastUpload.Format(timeLayout))
+		systray.SetTooltip(lastUploadLbText + lastUpload.Format(timeLayout))
 		time.Sleep(2 * time.Second)
 	}
 }

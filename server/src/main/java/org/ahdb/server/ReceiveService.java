@@ -24,6 +24,7 @@ public class ReceiveService {
 
     public Boolean receive(List<ValuableDataByAccount> lvaluableDataByAccount) {
         lvaluableDataByAccount.forEach(dataByA -> {
+            log.info("raw data received from account {}", dataByA.accountId);
             Timestamp createTime = new Timestamp(System.currentTimeMillis());
 
             rawDataService.save(dataByA, createTime);

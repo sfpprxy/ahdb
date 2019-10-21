@@ -7,6 +7,7 @@ import (
 	"github.com/sirupsen/logrus"
 	easy "github.com/t-tomalak/logrus-easy-formatter"
 	"os"
+	"os/exec"
 	"time"
 )
 
@@ -27,15 +28,24 @@ func init() {
 		check(err)
 		log.SetOutput(f)
 	}
+	log.Info("log.Level ", log.Level)
 }
 
 var mainwin *ui.Window
 var lastUpload time.Time
+var lastUploadLbText = "最近充能点："
+var accountLbText = "账号和角色："
+var powerLbText = "传送器能量："
+var accountStats AccountStats
 
-func panelInfoUpdater(lastUploadLb *ui.Label) {
+func panelInfoUpdater(lastUploadLb *ui.Label, accountLb *ui.Label, powerLb *ui.Label) {
 	for {
+		accountStats = getAccountStats()
+
 		ui.QueueMain(func() {
-			lastUploadLb.SetText("最近上传：" + lastUpload.Format(timeLayout))
+			lastUploadLb.SetText(lastUploadLbText + lastUpload.Format(timeLayout))
+			accountLb.SetText(accountLbText + accountStats.AccountId + " - " + accountStats.Chars)
+			powerLb.SetText(powerLbText + string(accountStats.Power))
 		})
 		time.Sleep(2 * time.Second)
 	}
@@ -43,7 +53,7 @@ func panelInfoUpdater(lastUploadLb *ui.Label) {
 
 func mainui() {
 	err := ui.Main(func() {
-		mainwin = ui.NewWindow("Auction House Database App", 400, 300, true)
+		mainwin = ui.NewWindow("地精传送器", 400, 300, true)
 		mainwin.OnClosing(func(*ui.Window) bool {
 			mainwin.Destroy()
 			ui.Quit()
@@ -60,12 +70,16 @@ func mainui() {
 		mainwin.SetChild(box)
 		mainwin.SetMargined(true)
 
-		hbox := ui.NewHorizontalBox()
-		box.Append(hbox, true)
 		box.SetPadded(true)
 
-		lastUploadLb := ui.NewLabel("最近上传：")
-		hbox.Append(lastUploadLb, true)
+		accountLb := ui.NewLabel("账号和角色：")
+		box.Append(accountLb, true)
+
+		powerLb := ui.NewLabel("传送器能量：")
+		box.Append(powerLb, true)
+
+		lastUploadLb := ui.NewLabel(lastUploadLbText)
+		box.Append(lastUploadLb, true)
 
 		chooseBtn := ui.NewButton("选择Wow.exe")
 		box.Append(chooseBtn, true)
@@ -73,18 +87,30 @@ func mainui() {
 		hideBtn := ui.NewButton("隐藏到托盘")
 		box.Append(hideBtn, true)
 
-		// 选择wow和隐藏按钮并列水平布局, web按钮单独
-		//webBtn := ui.NewButton("藏宝海湾")
-		//box.Append(hideBtn, true)
+		webBtn := ui.NewButton("传送到 藏宝海湾")
+		box.Append(webBtn, true)
 
 		chooseBtn.OnClicked(func(*ui.Button) {
 			saveWowPath(ui.OpenFile(mainwin))
 		})
+
 		hideBtn.OnClicked(func(*ui.Button) {
 			mainwin.Hide()
 		})
 
-		go panelInfoUpdater(lastUploadLb)
+		webBtn.OnClicked(func(*ui.Button) {
+			url := getBootyBayUrl() + "/" + accountStats.AccountId
+			var err error
+			if isOnWin() {
+				err = exec.Command("rundll32", "url.dll,FileProtocolHandler", url).Start()
+			}
+			if isOnMac() {
+				err = exec.Command("open", url).Start()
+			}
+			check(err, "传送藏宝海湾失败")
+		})
+
+		go panelInfoUpdater(lastUploadLb, accountLb, powerLb)
 
 		mainwin.Show()
 	})

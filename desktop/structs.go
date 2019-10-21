@@ -15,3 +15,9 @@ type Config struct {
 	WowPath    string `json:"wowPath"`
 	LastUpload string `json:"lastUpload"`
 }
+
+type AccountStats struct {
+	AccountId string `json:"accountId"`
+	Chars     string `json:"chars"`
+	Power     int    `json:"power"`
+}
