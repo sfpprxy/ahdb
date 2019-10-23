@@ -1,9 +1,16 @@
 package org.ahdb.server.model;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.sql.Timestamp;
 
+@Accessors(chain = true)
+@Getter
+@Setter
 @Entity
 public class AccountStats {
     @Id
@@ -11,40 +18,4 @@ public class AccountStats {
     public String chars;
     public Integer power;
     public Timestamp lastPush;
-
-    public String getAccountId() {
-        return accountId;
-    }
-
-    public AccountStats setAccountId(String accountId) {
-        this.accountId = accountId;
-        return this;
-    }
-
-    public String getChars() {
-        return chars;
-    }
-
-    public AccountStats setChars(String chars) {
-        this.chars = chars;
-        return this;
-    }
-
-    public Integer getPower() {
-        return power;
-    }
-
-    public AccountStats setPower(Integer power) {
-        this.power = power;
-        return this;
-    }
-
-    public Timestamp getLastPush() {
-        return lastPush;
-    }
-
-    public AccountStats setLastPush(Timestamp lastPush) {
-        this.lastPush = lastPush;
-        return this;
-    }
 }

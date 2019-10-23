@@ -1,10 +1,10 @@
 package org.ahdb.server;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.ahdb.server.model.AccountStats;
 import org.ahdb.server.model.AccountStatsVO;
 import org.ahdb.server.util.U;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,11 +13,10 @@ import java.sql.Timestamp;
 import java.util.Map;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AccountService {
-    private static final Logger log = LoggerFactory.getLogger(AccountService.class);
-
-    @Autowired
-    AccountStatsRepository accountStatsRepository;
+    final AccountStatsRepository accountStatsRepository;
 
     private static Map<String, Timestamp> uploaders = U.map();
     private int powerUnit = 10;
