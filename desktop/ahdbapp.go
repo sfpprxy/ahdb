@@ -6,6 +6,7 @@ import (
 	"github.com/getlantern/systray"
 	"github.com/sirupsen/logrus"
 	easy "github.com/t-tomalak/logrus-easy-formatter"
+	"io"
 	"os"
 	"os/exec"
 	"time"
@@ -26,7 +27,8 @@ func init() {
 	if isOnWin() {
 		f, err := os.OpenFile("ahdb.log", os.O_RDWR|os.O_APPEND|os.O_CREATE, 0755)
 		check(err)
-		log.SetOutput(f)
+		mw := io.MultiWriter(os.Stdout, f)
+		log.SetOutput(mw)
 	}
 	log.Info("log.Level ", log.Level)
 }
