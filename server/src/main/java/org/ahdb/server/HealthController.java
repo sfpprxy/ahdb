@@ -18,6 +18,7 @@ public class HealthController {
         long free = rt.freeMemory();
         long total = rt.totalMemory();
         String mem = String.format("max %s free %s total %s", max, free, total);
+        log.info(mem);
         log.debug(mem);
         return mem;
     }

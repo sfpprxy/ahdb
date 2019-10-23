@@ -90,7 +90,7 @@ public class AccountService {
         if (as.accountId == null) {
             as.setAccountId(accountId)
                     .setChars(chars)
-                    .setPower(0);
+                    .setPower(20);
         } else {
             int t = as.power + quantity;
             log.debug("power {}", t);

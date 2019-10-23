@@ -5,6 +5,7 @@ git stash
 echo '> pull'
 git pull
 
+cp ./src/main/resources/logback.xml.prod ./src/main/resources/logback.xml
 cp ./src/main/resources/application.properties.prod ./src/main/resources/application.properties
 
 echo '> kill old'
