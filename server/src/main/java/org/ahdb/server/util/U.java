@@ -1,12 +1,17 @@
 package org.ahdb.server.util;
 
 import com.google.gson.Gson;
+import org.slf4j.helpers.MessageFormatter;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -151,6 +156,25 @@ public class U {
             e.printStackTrace();
         }
         return contentBuilder.toString();
+    }
+
+    public static Timestamp timestampNow() {
+        return new Timestamp(System.currentTimeMillis());
+    }
+
+    public static LocalDateTime dateTimeNow() {
+        return LocalDateTime.now();
+    }
+
+    public static String stackTrace(Exception ex) {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        ex.printStackTrace(pw);
+        return sw.toString();
+    }
+
+    public static String fstr(String string, Object...objects) {
+        return MessageFormatter.arrayFormat(string, objects).getMessage();
     }
 
     public static Timer newTimer() {

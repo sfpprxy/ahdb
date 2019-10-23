@@ -25,6 +25,11 @@ public class ItemDescService {
     private ForkJoinPool pool;
     private BlockingQueue<ItemDesc> descQueue;
 
+    public ItemDesc getItem(String item) {
+        List<ItemDesc> descs = List.ofAll(itemDescRepository.findByIdOrNameLike(item, item));
+        return descs.get();
+    }
+
     public void save(List<ItemScan> lis) {
         Set<String> dbIds = List.ofAll(itemDescRepository.findAllItemId()).toSet();
         Set<String> isIds = lis.map(is -> is.itemId).toSet();

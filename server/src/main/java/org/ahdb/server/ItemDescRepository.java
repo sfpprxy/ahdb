@@ -10,4 +10,6 @@ public interface ItemDescRepository extends JpaRepository<ItemDesc, String> {
 
     @Query(value = "select id from item_desc", nativeQuery = true)
     List<String> findAllItemId();
+
+    List<ItemDesc> findByIdOrNameLike(String id, String name);
 }

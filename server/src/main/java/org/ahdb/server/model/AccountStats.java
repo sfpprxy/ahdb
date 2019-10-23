@@ -8,10 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.sql.Timestamp;
 
-@Accessors(chain = true)
+@Entity
 @Getter
 @Setter
-@Entity
+@Accessors(chain = true)
 public class AccountStats {
     @Id
     public String accountId;

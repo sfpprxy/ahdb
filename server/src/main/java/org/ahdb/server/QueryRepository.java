@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface ViewRepository extends JpaRepository<ItemDesc, String> {
+public interface QueryRepository extends JpaRepository<ItemDesc, String> {
 
     @Query(value =
                 "select item_desc.id, " +

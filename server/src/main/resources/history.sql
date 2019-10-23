@@ -56,6 +56,9 @@ create table item_desc
 create index item_desc_id_idx
     on item_desc (id);
 
+create index item_desc_name_idx
+    on item_desc (name);
+
 -- date 2019-10-08 09:17:41
 create table item_scan
 (

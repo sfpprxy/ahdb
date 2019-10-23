@@ -6,8 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class ValuableDataParser {
     private static final Logger log = LoggerFactory.getLogger(ValuableDataParser.class);
@@ -20,22 +20,23 @@ public class ValuableDataParser {
         }
         l = l.pop();
 
-        AtomicReference<Timestamp> headScanTime = new AtomicReference<>();
+        final LocalDateTime[] headScanTime = {null};
 
         List<ItemScan> itemScanL = l.map(s -> {
             try {
                 List<String> sl = List.of(s.split(","));
                 Timestamp scanTime = new Timestamp(Long.valueOf(sl.get(5)) * 1000);
+                LocalDateTime ld = scanTime.toLocalDateTime();
 
-                if (headScanTime.get() == null) {
-                    headScanTime.set(scanTime);
+                if (headScanTime[0] == null) {
+                    headScanTime[0] = ld;
                 }
-                int sec = 600;
-                int gapAllowed = sec * 1000 * 5;
-                Timestamp mustAfter = new Timestamp(headScanTime.get().getTime() - gapAllowed);
-                Timestamp mustBefore = new Timestamp(headScanTime.get().getTime() + gapAllowed);
-                if (scanTime.after(mustAfter) && scanTime.before(mustBefore)) {
-                    scanTime = headScanTime.get();
+                int gapAllowed = 1; // minutes
+                LocalDateTime before = headScanTime[0].minusMinutes(gapAllowed);
+                LocalDateTime after = headScanTime[0].plusMinutes(gapAllowed);
+
+                if (before.isBefore(ld) && after.isAfter(ld)) {
+                    scanTime = Timestamp.valueOf(headScanTime[0]);
                 } else {
                     throw new AhdbException("getItemScanList fail - scanTime gap too long: " + raw);
                 }
