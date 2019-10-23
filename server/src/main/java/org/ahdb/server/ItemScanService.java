@@ -26,10 +26,12 @@ public class ItemScanService {
             lis.forEach(is -> {
                 is.setRealm("觅心者-部落").setAddTime(createTime);
             });
+
             U.Timer t = U.newTimer();
             log.debug("start itemScanRepository.saveAll");
             itemScanRepository.saveAll(lis);
             log.debug("itemScanRepository.saveAll time: {}", t.getTime());
+
             return true;
         } else {
             log.debug("scanTime {} last5MinScanTime {}", scanTime, maybeis.get().scanTime);

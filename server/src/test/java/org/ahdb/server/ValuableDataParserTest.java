@@ -26,21 +26,25 @@ public class ValuableDataParserTest {
 
     @Test
     public void parseAuctionDBScan() {
-        parseRawFromDB();
+        List<ItemScan> lis = ValuableDataParser.getItemScanList(getRawFromDB());
     }
 
-    public List<ItemScan> parseRawFromDB() {
+    @Test
+    public void parseChars() {
+        String chars = ValuableDataParser.getChars(getRawFromDB());
+        System.out.println(chars);
+    }
+
+    public ValuableData getRawFromDB() {
         Timestamp ts = Timestamp.valueOf(LocalDateTime.now().minusDays(1));
 
         U.Timer timer = U.newTimer();
         List<RawData> lr = List.ofAll(rawDataRepository.findByTimeGreaterThan(ts));
 
         ValuableData dataByA = U.gson.fromJson(lr.last().rawStr, ValuableData.class);
-        List<ItemScan> lis = ValuableDataParser.getItemScanList(dataByA);
 
         log.debug("time: {}", timer.getTime());
-        log.debug("lis.length: {}", lis.length());
 
-        return lis;
+        return dataByA;
     }
 }

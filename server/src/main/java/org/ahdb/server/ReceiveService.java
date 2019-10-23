@@ -1,6 +1,7 @@
 package org.ahdb.server;
 
 import io.vavr.collection.List;
+import org.ahdb.server.model.AccountStats;
 import org.ahdb.server.model.ItemScan;
 import org.ahdb.server.model.ValuableDataByAccount;
 import org.ahdb.server.util.U;
@@ -21,27 +22,36 @@ public class ReceiveService {
     ItemDescService itemDescService;
     @Autowired
     ItemScanService itemScanService;
+    @Autowired
+    AccountService accountService;
+
 
     public Boolean receive(List<ValuableDataByAccount> lvaluableDataByAccount) {
-        lvaluableDataByAccount.forEach(dataByA -> {
+        for (ValuableDataByAccount dataByA : lvaluableDataByAccount) {
             log.info("raw data received from account {}", dataByA.accountId);
+
             Timestamp createTime = new Timestamp(System.currentTimeMillis());
 
             rawDataService.save(dataByA, createTime);
 
             processRaw(dataByA, createTime);
-        });
+        }
+
         return true;
     }
 
-    public void processRaw(ValuableDataByAccount dataByA, Timestamp createTimecc) {
+    public void processRaw(ValuableDataByAccount dataByA, Timestamp createTime) {
         if (U.match("debug", dataByA.type)) {
-            log.debug("debug rawData received");
+            log.debug("debug rawData received -> drop");
             return;
         }
         List<ItemScan> lis = ValuableDataParser.getItemScanList(dataByA.valuableData);
 
-        Boolean shouldSave = itemScanService.save(lis, createTimecc);
+        AccountStats as = ValuableDataParser.getAccountStats(dataByA);
+
+        Boolean shouldSave = itemScanService.save(lis, createTime);
+
+        accountService.chargeByPush(as);
 
         if (shouldSave) {
             itemDescService.save(lis);
