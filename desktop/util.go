@@ -9,6 +9,7 @@ import (
 )
 
 var debugMode = false
+var remoteMode = false
 
 func check(args ...interface{}) bool {
 	if args[0] != nil {
@@ -20,6 +21,10 @@ func check(args ...interface{}) bool {
 
 func onDebug() bool {
 	return debugMode
+}
+
+func onRemote() bool {
+	return remoteMode
 }
 
 func isOnMac() bool {
@@ -55,14 +60,18 @@ func getHttpClient() *http.Client {
 
 func post(url string, b []byte) ([]byte, error) {
 	resp, err := getHttpClient().Post(url, "application/json", bytes.NewBuffer(b))
-	check(err)
+	if check(err) {
+		return []byte{}, err
+	}
 	body, err1 := ioutil.ReadAll(resp.Body)
 	return body, err1
 }
 
 func get(url string) ([]byte, error) {
 	resp, err := getHttpClient().Get(url)
-	check(err)
+	if check(err) {
+		return []byte{}, err
+	}
 	body, err1 := ioutil.ReadAll(resp.Body)
 	return body, err1
 }

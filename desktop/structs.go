@@ -12,12 +12,13 @@ type ValuableDataByAccount struct {
 }
 
 type Config struct {
-	WowPath    string `json:"wowPath"`
-	LastUpload string `json:"lastUpload"`
+	WowPath           string `json:"wowPath"`
+	LastUploadTime    string `json:"lastUploadTime"`
+	LastUploadAccount string `json:"lastUploadAccount"`
 }
 
 type AccountStats struct {
 	AccountId string `json:"accountId"`
 	Chars     string `json:"chars"`
-	Power     int    `json:"power"`
+	Power     string `json:"power"`
 }

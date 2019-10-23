@@ -12,7 +12,9 @@ var timeLayout = "2006-01-02 15:04:05"
 func getBaseUrl() string {
 	host := "http://123.206.124.78:9999/ahdb"
 	if onDebug() {
-		host = "http://localhost:9999/ahdb"
+		if !onRemote() {
+			host = "http://localhost:9999/ahdb"
+		}
 	}
 	return host
 }
@@ -23,6 +25,10 @@ func getUploadUrl() string {
 
 func getBootyBayUrl() string {
 	return getBaseUrl()
+}
+
+func getAccountStatsUrl() string {
+	return getBaseUrl() + "/account-stats"
 }
 
 func loadConf() (error, Config) {
@@ -54,14 +60,27 @@ func saveWowPath(wowPath string) {
 
 func readLastUploadTime() time.Time {
 	err, c := loadConf()
-	t, err := time.Parse(timeLayout, c.LastUpload)
+	t, err := time.Parse(timeLayout, c.LastUploadTime)
 	check(err, "读取上次上传时间失败")
 	return t
 }
 
 func saveLastUploadTime(t time.Time) {
 	err, c := loadConf()
-	c.LastUpload = t.Format(timeLayout)
+	c.LastUploadTime = t.Format(timeLayout)
 	err = saveConf(c)
 	check(err, "保存上次上传时间失败")
+}
+
+func readLastUploadAccount() string {
+	err, c := loadConf()
+	check(err, "读取上次上传账号失败")
+	return c.LastUploadAccount
+}
+
+func saveLastUploadAccount(aid string) {
+	err, c := loadConf()
+	c.LastUploadAccount = aid
+	err = saveConf(c)
+	check(err, "保存上次上传账号失败")
 }

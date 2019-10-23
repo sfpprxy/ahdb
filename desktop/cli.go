@@ -5,8 +5,14 @@ func handleCliInput(args []string) {
 		return
 	}
 
-	if args[0] == "debug" || args[1] == "debug" {
-		debugMode = true
-		log.Debug("DEBUG MODE ON")
+	for _, v := range args {
+		if v == "debug" {
+			debugMode = true
+			log.Debug("DEBUG MODE ON")
+		}
+		if v == "remote" {
+			remoteMode = true
+			log.Debug("REMOTE MODE ON")
+		}
 	}
 }

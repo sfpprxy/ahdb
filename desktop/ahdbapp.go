@@ -40,12 +40,17 @@ var accountStats AccountStats
 
 func panelInfoUpdater(lastUploadLb *ui.Label, accountLb *ui.Label, powerLb *ui.Label) {
 	for {
-		accountStats = getAccountStats()
+		lastUploadAccount := readLastUploadAccount()
+		accountStats = getAccountStats(lastUploadAccount)
+		if len(accountStats.AccountId) < 1 {
+			accountStats.AccountId = lastUploadAccount
+		}
+		log.Debug(accountStats)
 
 		ui.QueueMain(func() {
 			lastUploadLb.SetText(lastUploadLbText + lastUpload.Format(timeLayout))
 			accountLb.SetText(accountLbText + accountStats.AccountId + " - " + accountStats.Chars)
-			powerLb.SetText(powerLbText + string(accountStats.Power))
+			powerLb.SetText(powerLbText + accountStats.Power)
 		})
 		time.Sleep(2 * time.Second)
 	}
@@ -99,7 +104,7 @@ func mainui() {
 		})
 
 		webBtn.OnClicked(func(*ui.Button) {
-			url := getBootyBayUrl() + "/" + accountStats.AccountId
+			url := getBootyBayUrl() + "/?account=" + readLastUploadAccount()
 			var err error
 			if isOnWin() {
 				err = exec.Command("rundll32", "url.dll,FileProtocolHandler", url).Start()
@@ -121,6 +126,7 @@ var lc = 1
 
 func jobLoop() {
 	lastUpload = readLastUploadTime()
+	accountStats.AccountId = readLastUploadAccount()
 	for {
 		lc += 1
 		log.Debug("loop: ", lc, "开始扫描...")
@@ -137,6 +143,10 @@ func jobLoop() {
 			time.Sleep(time.Second * 10)
 			continue
 		}
+
+		aid := valuableDataByAccount[0].AccountId
+		log.Debug("aid ", aid)
+		saveLastUploadAccount(aid[:len(aid)-2])
 
 		uploaded := upload(valuableDataByAccount)
 		if uploaded {
