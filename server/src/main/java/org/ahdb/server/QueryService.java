@@ -2,12 +2,13 @@ package org.ahdb.server;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.ahdb.server.model.IpStats;
-import org.ahdb.server.model.ItemDesc;
-import org.ahdb.server.model.ItemStats;
+import org.ahdb.server.model.*;
 import org.ahdb.server.util.U;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class QueryService {
 
     final QueryRepository queryRepository;
+    final ItemScanRepository itemScanRepository;
     final AccountService accountService;
     final ItemDescService itemDescService;
     final CacheService cacheService;
@@ -31,15 +33,28 @@ public class QueryService {
         ItemStats itemStats = new ItemStats();
 
         ItemDesc desc = itemDescService.getItem(item);
-        // TODO: get item market stats
+        ItemScan scan = itemScanRepository.findFirstByItemIdOrderByScanTimeDesc(desc.id);
+        if (scan == null) {
+            throw new AhdbUserException(AhdbUserException.NO_ITEM);
+        }
+        log.debug("scan market: {}", scan.marketValue);
+
+        List<List<Object>> raw = queryRepository.queryItemDailyStats(desc.id);
+
+        List<DailyStat> dailyStats = raw.stream().map(tuple -> {
+            DailyStat stat = U.tupleToBean(tuple, DailyStat.class);
+            return stat;
+        }).collect(Collectors.toList());
+
         itemStats.setItemDesc(desc)
-                .setCurrentMarket(11)
-                .setAvgMarketToday(13)
-                .setAvgMarket14Day(15);
+                .setCurrentMarket(scan.marketValue)
+                .setAt(scan.scanTime)
+                .setAvgMarket3Day(null)
+                .setAvgMarket14Day(null)
+                .setDailyStats(dailyStats);
 
         boolean powerEnough = accountService.consumeByQuery(accountId);
         if (!powerEnough) {
-            // TODO: AOP catch Ex and return
             throw new AhdbUserException(AhdbUserException.NO_POWER);
         }
         return itemStats;

@@ -1,11 +1,14 @@
 package org.ahdb.server.util;
 
 import com.google.gson.Gson;
+import org.ahdb.server.model.DailyStat;
 import org.slf4j.helpers.MessageFormatter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -245,12 +248,34 @@ public class U {
 
     }
 
-    public static void main(String[] args) {
-        Counter c = U.newCounter(17233);
-        for (int i = 0; i < 17233; i++) {
-            c.addOne();
-            U.sleep(1);
+    public static <T> T tupleToBean(List<Object> tuple, Class<T> clz) {
+        Constructor<?>[] cons = clz.getConstructors();
+        if (cons.length != 1) {
+            throw new RuntimeException("Constructor more than 1");
         }
+        if (cons[0].getParameterCount() >= 1) {
+            throw new RuntimeException("Constructor param more than 1");
+        }
+        T ins;
+        try {
+            ins = (T) cons[0].newInstance();
+            Field[] fs = clz.getDeclaredFields();
+            for (int i = 0; i < tuple.size(); i++) {
+                fs[i].set(ins, tuple.get(i));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return ins;
+    }
+
+    public static void main(String[] args) {
+        List<Object> l = U.list();
+        l.add(timestampNow());
+        l.add(1);
+        DailyStat stat = tupleToBean(l, DailyStat.class);
+        System.out.println(stat.day);
+        System.out.println(stat.avgMarket);
 
     }
 }

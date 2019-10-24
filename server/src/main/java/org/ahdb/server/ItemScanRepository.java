@@ -12,6 +12,8 @@ public interface ItemScanRepository extends JpaRepository<ItemScan, String> {
 
     Optional<ItemScan> findFirstByScanTimeAfter(Timestamp timestamp);
 
+    ItemScan findFirstByItemIdOrderByScanTimeDesc(String itemId);
+
 //    @QueryHints(value = @QueryHint(name = HINT_FETCH_SIZE, value = "1"))
     @Query(value = "SELECT DISTINCT (scan_time) FROM item_scan ORDER BY scan_time", nativeQuery = true)
     List<Timestamp> streamAll();

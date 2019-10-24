@@ -26,11 +26,11 @@ public interface QueryRepository extends JpaRepository<ItemDesc, String> {
             , nativeQuery = true)
     List<Object> view();
 
-    @Query(value = "select count(*)\n" +
-            "from item_desc\n" +
-            "         join item_scan\n" +
-            "              on item_desc.id = item_scan.item_id\n" +
-            "where item_desc.name != '!奥术水晶'\n"
+    @Query(value =
+            "SELECT daily_time_bucket, CAST(daily_avg_market_value AS INTEGER)\n" +
+            "FROM view_daily\n" +
+            "WHERE id = ?\n" +
+            "ORDER BY daily_time_bucket DESC"
     ,nativeQuery = true)
-    long countNum();
+    List<List<Object>> queryItemDailyStats(String id);
 }

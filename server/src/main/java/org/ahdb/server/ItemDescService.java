@@ -27,7 +27,11 @@ public class ItemDescService {
 
     public ItemDesc getItem(String item) {
         List<ItemDesc> descs = List.ofAll(itemDescRepository.findByIdOrNameLike(item, item));
-        return descs.get();
+        ItemDesc desc = descs.get();
+        if (desc == null) {
+            throw new AhdbUserException(AhdbUserException.NO_ITEM);
+        }
+        return desc;
     }
 
     public void save(List<ItemScan> lis) {

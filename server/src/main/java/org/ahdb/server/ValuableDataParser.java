@@ -44,7 +44,7 @@ public class ValuableDataParser {
                 return new ItemScan()
                         .setItemId(sl.get(0).substring(2))
                         .setMinBuyout(Integer.valueOf(sl.get(1)))
-                        .setMarketValue(Double.valueOf(sl.get(2)))
+                        .setMarketValue(Double.valueOf(sl.get(2)).intValue())
                         .setNumAuctions(Integer.valueOf(sl.get(3)))
                         .setQuantity(Integer.valueOf(sl.get(4)))
                         .setScanTime(scanTime);
