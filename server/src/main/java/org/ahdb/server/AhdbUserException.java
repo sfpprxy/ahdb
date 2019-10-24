@@ -1,6 +1,10 @@
 package org.ahdb.server;
 
 public class AhdbUserException extends RuntimeException {
+
+    static final String NO_POWER = "not enough power!";
+    static final String NO_FREE = "not enough free chance for your ip!";
+
     public AhdbUserException() {
         super();
     }
@@ -16,4 +20,5 @@ public class AhdbUserException extends RuntimeException {
     public AhdbUserException(Exception cause) {
         super(cause);
     }
+
 }

@@ -40,7 +40,7 @@ public class QueryService {
         boolean powerEnough = accountService.consumeByQuery(accountId);
         if (!powerEnough) {
             // TODO: AOP catch Ex and return
-            throw new AhdbUserException("not enough power");
+            throw new AhdbUserException(AhdbUserException.NO_POWER);
         }
         return itemStats;
     }
@@ -55,7 +55,7 @@ public class QueryService {
             ipst.setTimesToday(0);
         }
         if (ipst.timesToday > 10) {
-            throw new AhdbUserException("not enough free chance");
+            throw new AhdbUserException(AhdbUserException.NO_FREE);
         }
 
         ipst.setTimesToday(ipst.timesToday + 2);

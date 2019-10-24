@@ -1,6 +1,7 @@
 package org.ahdb.server;
 
 public class AhdbException extends RuntimeException {
+
     public AhdbException() {
         super();
     }

@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Map;
 
 @Slf4j
 @Service
@@ -19,9 +18,6 @@ import java.util.Map;
 public class AccountService {
 
     final AccountStatsRepository accountStatsRepository;
-    final RawLogService rawLogService;
-
-    private static Map<String, Timestamp> uploaders = U.map();
 
     @Transactional
     public AccountStatsVO getStats(String accountId) {
@@ -50,7 +46,6 @@ public class AccountService {
         }
         String msg = U.fstr("after  charge accountId {} chars {} lastPush {}", id, as.chars, as.lastPush);
         log.info(msg);
-        rawLogService.log("chargedByPush", msg);
     }
 
     @Transactional
