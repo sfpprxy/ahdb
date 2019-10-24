@@ -3,7 +3,7 @@ package org.ahdb.server;
 public class AhdbUserException extends RuntimeException {
 
     static final String NO_POWER = "not enough power!";
-    static final String NO_FREE = "not enough free chance for your ip!";
+    static final String NO_FREE = "not enough free chance today!";
 
     public AhdbUserException() {
         super();
