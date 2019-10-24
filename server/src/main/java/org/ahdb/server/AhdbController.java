@@ -8,6 +8,7 @@ import org.ahdb.server.model.ValuableDataByAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Slf4j
@@ -35,12 +36,13 @@ public class AhdbController {
     }
 
     @GetMapping(value = "/item")
-    public ItemStats queryItemStats(@RequestParam String account, @RequestParam String item) {
-        return queryService.queryItemStats(account, item);
+    public ItemStats queryItemStats(@RequestParam String account, @RequestParam String item, HttpServletRequest request) {
+        return queryService.queryItemStats(account, item, request.getRemoteAddr());
     }
 
-    @GetMapping(value = "/saveAllFromRaw")
-    public String saveAllFromRaw() {
-        return "ERR";
+    @GetMapping(value = "/test-get")
+    public String testGet(HttpServletRequest request) {
+        queryService.queryItemStats(null, "毛料", request.getRemoteAddr());
+        return "testGet";
     }
 }

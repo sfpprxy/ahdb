@@ -4,13 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.util.Map;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Accessors(chain = true)
-public class Cache {
+public class IpStats {
 
-    public Map<String, IpStats> statsByIp;
+    public LocalDateTime lastQuery;
+    public Integer timesToday;
 
 }

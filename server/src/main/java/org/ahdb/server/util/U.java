@@ -22,6 +22,16 @@ public class U {
 
     public static Gson gson = new Gson();
 
+    public static boolean empty(Object o) {
+        if (o == null) {
+            return true;
+        }
+        if (o instanceof String) {
+            return ((String) o).isEmpty();
+        }
+        return false;
+    }
+
     public static String fixedLenStr(String string, int fixedLen) {
         return fixedLenStr(string, fixedLen, false);
     }
