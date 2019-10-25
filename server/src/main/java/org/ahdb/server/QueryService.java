@@ -22,10 +22,6 @@ public class QueryService {
     final CacheService cacheService;
 
     public ItemStats queryItemStats(String accountId, String item, String ip) {
-        if (U.empty(accountId)) {
-            ipFilter(ip);
-        }
-
         String chars = accountService.getStats(accountId).chars;
         String msg = U.fstr("{} queryItemStats {}", chars, item);
         log.info(msg);
@@ -53,10 +49,15 @@ public class QueryService {
                 .setAvgMarket14Day(null)
                 .setDailyStats(dailyStats);
 
-        boolean powerEnough = accountService.consumeByQuery(accountId);
-        if (!powerEnough) {
-            throw new AhdbUserException(AhdbUserException.NO_POWER);
+        if (U.empty(accountId) || U.match(accountId, "null")) {
+            ipFilter(ip);
+        } else {
+            boolean powerEnough = accountService.consumeByQuery(accountId);
+            if (!powerEnough) {
+                throw new AhdbUserException(AhdbUserException.NO_POWER);
+            }
         }
+
         return itemStats;
     }
 
