@@ -12,7 +12,7 @@ window.onload = function () {
                 console.debug(response);
                 var nick = response.data.chars;
                 console.debug("nick", nick);
-                $("#banner")[0].textContent = ("欢迎来到藏宝海湾," + nick + "！!");
+                $("#banner")[0].textContent = ("欢迎来到藏宝海湾," + nick + "！");
             })
             .catch(function (error) {
                 console.error(error);
