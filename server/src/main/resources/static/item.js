@@ -7,7 +7,7 @@ window.onload = function () {
     accountId = url.searchParams.get("account");
     var item = url.searchParams.get("item");
 
-    if (accountId && item) {
+    if (item) {
         console.debug("accountId", accountId, "item", item);
         axios.get(baseUrl + '/item-stats?account=' + accountId + '&item=' + item)
             .then(function (response) {
