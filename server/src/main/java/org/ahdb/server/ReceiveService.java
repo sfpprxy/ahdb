@@ -37,7 +37,7 @@ public class ReceiveService {
             }
             return true;
         } catch (Exception ex) {
-            log.error("receive fail", ex);
+            log.error("receive fail {}", U.stackTrace(ex));
             rawLogService.log("receive fail", U.stackTrace(ex));
             return false;
         }

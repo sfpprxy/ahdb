@@ -39,10 +39,14 @@ public class AccountService {
     public void chargeByPush(AccountStats accountStats) {
         String id = accountStats.accountId;
         AccountStats as = accountStatsRepository.findFirstByAccountId(id);
+        if (as == null) {
+            as = accountStats;
+            as.setLastPush(Timestamp.valueOf(U.dateTimeNow().minusDays(1)));
+        }
         log.debug("before charge accountId {} chars {} lastPush {}", id, as.chars, as.lastPush);
         if (as.lastPush.toLocalDateTime().isBefore(LocalDateTime.now().minusMinutes(5))) {
             as.setLastPush(Timestamp.valueOf(LocalDateTime.now()));
-            charge(id, as.chars, 20);
+            charge(as, 20);
         }
         String msg = U.fstr("after  charge accountId {} chars {} lastPush {}", id, as.chars, as.lastPush);
         log.info(msg);
@@ -79,13 +83,14 @@ public class AccountService {
         return consume(accountId, cp);
     }
 
-    private void charge(String accountId, String chars, Integer quantity) {
+    private void charge(AccountStats accountStats, Integer quantity) {
         log.debug("into charge");
-        AccountStats as = accountStatsRepository.findById(accountId).orElse(new AccountStats());
+        AccountStats as = accountStatsRepository.findById(accountStats.accountId).orElse(new AccountStats());
         if (as.accountId == null) {
-            as.setAccountId(accountId)
-                    .setChars(chars)
-                    .setPower(20);
+            as.setAccountId(accountStats.accountId)
+                    .setChars(accountStats.chars)
+                    .setPower(0)
+                    .setLastPush(accountStats.lastPush);
         } else {
             int t = as.power + quantity;
             log.debug("power {}", t);
