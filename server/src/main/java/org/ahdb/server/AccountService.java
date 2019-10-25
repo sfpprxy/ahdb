@@ -89,7 +89,7 @@ public class AccountService {
         if (as.accountId == null) {
             as.setAccountId(accountStats.accountId)
                     .setChars(accountStats.chars)
-                    .setPower(0)
+                    .setPower(quantity)
                     .setLastPush(accountStats.lastPush);
         } else {
             int t = as.power + quantity;
