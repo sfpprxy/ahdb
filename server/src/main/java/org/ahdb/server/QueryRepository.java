@@ -30,6 +30,7 @@ public interface QueryRepository extends JpaRepository<ItemDesc, String> {
             "SELECT daily_time_bucket, CAST(daily_avg_market_value AS INTEGER)\n" +
             "FROM view_daily\n" +
             "WHERE id = ?\n" +
+            "  AND daily_time_bucket > now() - INTERVAL '14 day'\n" +
             "ORDER BY daily_time_bucket DESC"
     ,nativeQuery = true)
     List<List<Object>> queryItemDailyStats(String id);

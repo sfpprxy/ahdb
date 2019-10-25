@@ -22,4 +22,5 @@ where item_desc.name != '!奥术水晶';
 SELECT daily_time_bucket, CAST(daily_avg_market_value AS INTEGER)
 FROM view_daily
 WHERE id = '2592'
+  AND daily_time_bucket > now() - INTERVAL '14 day'
 ORDER BY daily_time_bucket DESC;

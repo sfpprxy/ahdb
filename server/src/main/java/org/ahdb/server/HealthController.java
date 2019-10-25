@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/ahdb")
+@RequestMapping()
 @RestController
 public class HealthController {
     private static final Logger log = LoggerFactory.getLogger(HealthController.class);

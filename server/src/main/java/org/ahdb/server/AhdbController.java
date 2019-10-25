@@ -13,7 +13,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/ahdb")
+@RequestMapping()
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AhdbController {
 
@@ -35,7 +35,7 @@ public class AhdbController {
         return accountService.getStats(account);
     }
 
-    @GetMapping(value = "/item")
+    @GetMapping(value = "/item-stats")
     public ItemStats queryItemStats(@RequestParam String account, @RequestParam String item, HttpServletRequest request) {
         return queryService.queryItemStats(account, item, request.getRemoteAddr());
     }
