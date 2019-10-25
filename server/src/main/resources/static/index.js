@@ -1,4 +1,4 @@
-var baseUrl = 'http://localhost:9999/ahdb';
+var baseUrl = 'http://123.206.124.78:9999/ahdb';
 var accountId;
 
 window.onload = function () {
