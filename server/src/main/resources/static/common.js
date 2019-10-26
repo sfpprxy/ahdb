@@ -14,8 +14,8 @@ export function getAccount() {
 export function searchItem() {
     const sb = $("#searchBox")[0];
     console.debug(sb);
-    let account = '';
-    if (!getAccount()) {
+    let account = getAccount();
+    if (!account) {
         account = ''
     }
     window.location.href = getBaseUrl() + '/item' + '?account=' + account + '&item=' + sb.value;
