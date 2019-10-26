@@ -18,7 +18,7 @@ public class CacheService {
 
     public IpStats getIpStats(String ip) {
         Cache cache = get();
-        IpStats is = cache.getStatsByIp().get(ip);
+        IpStats is = cache.getStatsByIp().getOrDefault(ip, new IpStats());
 
         if (is.lastQuery == null) {
             is.setLastQuery(U.dateTimeNow().minusDays(2));

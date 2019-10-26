@@ -1,16 +1,15 @@
-var baseUrl = 'http://123.206.124.78:9999/ahdb';
-var accountId;
+import {getAccount, getBaseUrl} from "./common.js";
+
 
 window.onload = function () {
-    var url = new URL(window.location.toString());
-    accountId = url.searchParams.get("account");
+    let accountId = getAccount();
 
     if (accountId) {
         console.debug("accountId", accountId);
-        axios.get(baseUrl + '/account-stats?account=' + accountId)
+        axios.get(getBaseUrl() + '/account-stats?account=' + accountId)
             .then(function (response) {
                 console.debug(response);
-                var nick = response.data.chars;
+                const nick = response.data.chars;
                 console.debug("nick", nick);
                 $("#banner")[0].textContent = ("欢迎来到藏宝海湾," + nick + "！");
             })
@@ -19,9 +18,3 @@ window.onload = function () {
             });
     }
 };
-
-function searchItem() {
-    var sb = $("#searchBox")[0];
-    console.debug(sb);
-    window.location.href = baseUrl + '/item' + '?account=' + accountId + '&item='+sb.value;
-}
