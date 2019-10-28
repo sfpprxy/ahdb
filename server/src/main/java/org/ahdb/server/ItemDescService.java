@@ -27,10 +27,10 @@ public class ItemDescService {
 
     public ItemDesc getItem(String item) {
         List<ItemDesc> descs = List.ofAll(itemDescRepository.findByIdOrNameLike(item, item));
-        ItemDesc desc = descs.get();
-        if (desc == null) {
+        if (descs.isEmpty()) {
             throw new AhdbUserException(AhdbUserException.NO_ITEM);
         }
+        ItemDesc desc = descs.get();
         return desc;
     }
 

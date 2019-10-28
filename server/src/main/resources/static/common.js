@@ -1,4 +1,3 @@
-
 export function getBaseUrl() {
     console.log('getBaseUrl');
     return 'http://123.206.124.78:9999/ahdb';
@@ -6,14 +5,13 @@ export function getBaseUrl() {
 
 export function getAccount() {
     const url = new URL(window.location.toString());
-    let accountId = url.searchParams.get("account");
-    return accountId;
+    return url.searchParams.get("account");
 }
 
-
 export function searchItem() {
-    const sb = $("#searchBox")[0];
+    const sb = eid('searchBox');
     console.debug(sb);
+
     let account = getAccount();
     if (!account) {
         account = ''
@@ -22,3 +20,20 @@ export function searchItem() {
 }
 
 window.searchItem = searchItem;
+
+eid('searchBtn').addEventListener('click', function (e) {
+    console.debug('onclick');
+    searchItem();
+});
+
+eid('searchForm').addEventListener('keypress', function (e) {
+    if (e.keyCode === 13) {
+        console.debug('keypress');
+        e.preventDefault();
+        searchItem();
+    }
+});
+
+export function eid(id) {
+    return document.getElementById(id);
+}

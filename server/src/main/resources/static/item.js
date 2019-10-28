@@ -1,4 +1,4 @@
-import {getAccount, getBaseUrl} from "./common.js";
+import {eid, getAccount, getBaseUrl} from "./common.js";
 
 
 window.onload = function () {
@@ -15,7 +15,7 @@ window.onload = function () {
                 const is = response.data;
                 console.debug('itemStats', is);
                 console.debug('is.itemDesc.name', is.itemDesc.name);
-                $("#itemName")[0].textContent = (is.itemDesc.name)
+                eid('itemName').textContent = (is.itemDesc.name)
 
                 const mt = $("#marketTable tbody");
                 console.log(mt);
