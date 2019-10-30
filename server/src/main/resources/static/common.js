@@ -19,15 +19,13 @@ export function searchItem() {
     window.location.href = getBaseUrl() + '/item' + '?account=' + account + '&item=' + sb.value;
 }
 
-window.searchItem = searchItem;
-
 eid('searchBtn').addEventListener('click', function (e) {
     console.debug('onclick');
     searchItem();
 });
 
 eid('searchForm').addEventListener('keypress', function (e) {
-    if (e.keyCode === 13) {
+    if (e.key === 'Enter') {
         console.debug('keypress');
         e.preventDefault();
         searchItem();
