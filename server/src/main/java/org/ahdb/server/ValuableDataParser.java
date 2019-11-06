@@ -1,16 +1,15 @@
 package org.ahdb.server;
 
 import io.vavr.collection.List;
+import lombok.extern.slf4j.Slf4j;
 import org.ahdb.server.model.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Slf4j
 public class ValuableDataParser {
-    private static final Logger log = LoggerFactory.getLogger(ValuableDataParser.class);
 
     public static List<ItemScan> getItemScanList(ValuableData dataByA) {
         String raw = dataByA.auctionDBScan;
@@ -57,20 +56,20 @@ public class ValuableDataParser {
         return itemScanL;
     }
 
-    public static AccountStats getAccountStats(ValuableDataByAccount vd) {
-        String accountId = vd.accountId.substring(0, vd.accountId.indexOf("#"));
-        String chars = ValuableDataParser.getChars(vd.valuableData);
-        AccountStats as = new AccountStats().setAccountId(accountId).setChars(chars);
-        log.debug("AccountStats {} {}", accountId, chars);
-        return as;
-    }
-
     public static String getChars(ValuableData dataByA) {
         String raw = dataByA.chars;
         int i1 = raw.indexOf("\"") + 1;
         int i2 = raw.indexOf("-") - 1;
         String s = raw.substring(i1, i2);
         return s;
+    }
+
+    public static AccountStats getAccountStats(ValuableDataByAccount vd) {
+        String accountId = vd.accountId.substring(0, vd.accountId.indexOf("#"));
+        String chars = ValuableDataParser.getChars(vd.valuableData);
+        AccountStats as = new AccountStats().setAccountId(accountId).setChars(chars);
+        log.debug("AccountStats {} {}", accountId, chars);
+        return as;
     }
 
 }

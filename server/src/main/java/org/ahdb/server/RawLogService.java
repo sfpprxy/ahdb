@@ -22,4 +22,5 @@ public class RawLogService {
         rawLogRepository.save(log);
         return log;
     }
+
 }

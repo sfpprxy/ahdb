@@ -1,49 +1,20 @@
 package org.ahdb.server.model;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
 import java.sql.Timestamp;
 
+@Getter
+@Setter
+@Accessors(chain = true)
 public class ValuableDataByAccount {
 
     public Timestamp time;
     public String type;
     public String accountId;
     public ValuableData valuableData;
-
-    public Timestamp getTime() {
-        return time;
-    }
-
-    public ValuableDataByAccount setTime(Timestamp timecc) {
-        time = timecc;
-        return this;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public ValuableDataByAccount setType(String typecc) {
-        type = typecc;
-        return this;
-    }
-
-    public String getAccountId() {
-        return accountId;
-    }
-
-    public ValuableDataByAccount setAccountId(String accountIdcc) {
-        accountId = accountIdcc;
-        return this;
-    }
-
-    public ValuableData getValuableData() {
-        return valuableData;
-    }
-
-    public ValuableDataByAccount setValuableData(ValuableData valuableDatacc) {
-        valuableData = valuableDatacc;
-        return this;
-    }
 
     @Override
     public String toString() {

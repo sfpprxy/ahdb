@@ -1,22 +1,22 @@
 package org.ahdb.server;
 
 import io.vavr.collection.List;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.ahdb.server.model.ItemScan;
 import org.ahdb.server.util.U;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.Optional;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ItemScanService {
-    private static final Logger log = LoggerFactory.getLogger(ItemScanService.class);
 
-    @Autowired
-    ItemScanRepository itemScanRepository;
+    final ItemScanRepository itemScanRepository;
 
     public Boolean save(List<ItemScan> lis, Timestamp createTime) {
         Timestamp scanTime = lis.head().scanTime;

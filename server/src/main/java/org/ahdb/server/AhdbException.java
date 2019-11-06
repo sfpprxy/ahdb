@@ -17,4 +17,5 @@ public class AhdbException extends RuntimeException {
     public AhdbException(Exception cause) {
         super(cause);
     }
+
 }

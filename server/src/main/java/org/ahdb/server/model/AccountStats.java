@@ -13,9 +13,11 @@ import java.sql.Timestamp;
 @Setter
 @Accessors(chain = true)
 public class AccountStats {
+
     @Id
     public String accountId;
     public String chars;
     public Integer power;
     public Timestamp lastPush;
+
 }

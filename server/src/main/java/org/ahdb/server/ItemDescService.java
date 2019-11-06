@@ -2,11 +2,11 @@ package org.ahdb.server;
 
 import io.vavr.collection.List;
 import io.vavr.collection.Set;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.ahdb.server.model.ItemDesc;
 import org.ahdb.server.model.ItemScan;
 import org.ahdb.server.util.U;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +15,12 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.LinkedBlockingQueue;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ItemDescService {
-    private static final Logger log = LoggerFactory.getLogger(ItemDescService.class);
 
-    @Autowired
-    ItemDescRepository itemDescRepository;
+    final ItemDescRepository itemDescRepository;
 
     private ForkJoinPool pool;
     private BlockingQueue<ItemDesc> descQueue;
@@ -32,6 +32,21 @@ public class ItemDescService {
         }
         ItemDesc desc = descs.get();
         return desc;
+    }
+
+    public void startBatchSaveJob() {
+        log.debug("startBatchSaveJob...");
+        pool.submit(() -> {
+            while (true) {
+                ArrayList<ItemDesc> toSave = new ArrayList<>();
+                descQueue.drainTo(toSave, 2000);
+                if (!toSave.isEmpty()) {
+                    itemDescRepository.saveAll(toSave);
+                    log.info("{} new ItemDesc added", toSave.size());
+                }
+                U.sleep(60 * 1000);
+            }
+        });
     }
 
     public void save(List<ItemScan> lis) {
@@ -59,18 +74,4 @@ public class ItemDescService {
         });
     }
 
-    public void startBatchSaveJob() {
-        log.debug("startBatchSaveJob...");
-        pool.submit(() -> {
-            while (true) {
-                ArrayList<ItemDesc> toSave = new ArrayList<>();
-                descQueue.drainTo(toSave, 2000);
-                if (!toSave.isEmpty()) {
-                    itemDescRepository.saveAll(toSave);
-                    log.info("{} new ItemDesc added", toSave.size());
-                }
-                U.sleep(60 * 1000);
-            }
-        });
-    }
 }

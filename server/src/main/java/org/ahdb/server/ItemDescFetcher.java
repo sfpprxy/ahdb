@@ -1,21 +1,64 @@
 package org.ahdb.server;
 
 import io.vavr.collection.List;
+import lombok.extern.slf4j.Slf4j;
 import org.ahdb.server.model.ItemDesc;
 import org.ahdb.server.util.U;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
 import static io.vavr.API.Try;
 
+@Slf4j
 public class ItemDescFetcher {
-    private static final Logger log = LoggerFactory.getLogger(ItemDescFetcher.class);
+
+    public static ItemDesc getItemClass(String docStr) {
+        java.util.List<java.util.List> itemCata = RawMeta.getItemCata();
+
+        String breadcrumb = "";
+        String commaClass = "";
+        try {
+            // PageTemplate.set({ breadcrumb: [0,0,2,1]});
+            breadcrumb = "PageTemplate.set({ breadcrumb: ";
+            int index = docStr.indexOf(breadcrumb);
+            String sub = docStr.substring(index + breadcrumb.length() + 1, index + breadcrumb.length() + 20);
+            // 0,0,2,1
+            commaClass = sub.substring(0, sub.indexOf("]"));
+            String[] sp = commaClass.split(",");
+            Integer itemClassIndex = Integer.valueOf(sp[2]);
+            Integer subClassIndex = Integer.valueOf(sp[3]);
+
+            List<java.util.List> itemClassLJava = List.ofAll(itemCata);
+            List<List> itemClassLVavr = itemClassLJava.map(e -> List.ofAll(e));
+
+            List itemClassList = itemClassLVavr.find(e -> {
+                Double d = (Double) e.get(0);
+                return U.match(itemClassIndex, d.intValue());
+            }).get();
+
+            String itemClass = itemClassList.get(1).toString();
+
+            String subClass = Try(() -> {
+                java.util.List subClassListJ = (java.util.List) itemClassList.get(3);
+                Object subClassObj = List.ofAll(subClassListJ).find(e -> {
+                    java.util.List subClassJ = (java.util.List) e;
+                    Double d = Try(() -> Double.valueOf(subClassJ.get(0).toString())).getOrElse(0d);
+                    return U.match(subClassIndex, d.intValue());
+                }).get();
+                Object subClassStr = ((java.util.List) subClassObj).get(1);
+                return subClassStr.toString();
+            }).getOrElse("");
+
+            return new ItemDesc().setItemClass(itemClass).setSubClass(subClass);
+        } catch (Exception ex) {
+            log.error("getItemClass fail breadcrumb: {} commaClass: {} ", breadcrumb, commaClass, ex);
+            return new ItemDesc();
+        }
+    }
 
     public static ItemDesc getDesc(String id) {
         // TODO later fetch item icon as well
@@ -61,47 +104,4 @@ public class ItemDescFetcher {
         }
     }
 
-    public static ItemDesc getItemClass(String docStr) {
-        java.util.List<java.util.List> itemCata = RawMeta.getItemCata();
-
-        String breadcrumb = "";
-        String commaClass = "";
-        try {
-            // PageTemplate.set({ breadcrumb: [0,0,2,1]});
-            breadcrumb = "PageTemplate.set({ breadcrumb: ";
-            int index = docStr.indexOf(breadcrumb);
-            String sub = docStr.substring(index + breadcrumb.length() + 1, index + breadcrumb.length() + 20);
-            // 0,0,2,1
-            commaClass = sub.substring(0, sub.indexOf("]"));
-            String[] sp = commaClass.split(",");
-            Integer itemClassIndex = Integer.valueOf(sp[2]);
-            Integer subClassIndex = Integer.valueOf(sp[3]);
-
-            List<java.util.List> itemClassLJava = List.ofAll(itemCata);
-            List<List> itemClassLVavr = itemClassLJava.map(e -> List.ofAll(e));
-
-            List itemClassList = itemClassLVavr.find(e -> {
-                Double d = (Double) e.get(0);
-                return U.match(itemClassIndex, d.intValue());
-            }).get();
-
-            String itemClass = itemClassList.get(1).toString();
-
-            String subClass = Try(() -> {
-                java.util.List subClassListJ = (java.util.List) itemClassList.get(3);
-                Object subClassObj = List.ofAll(subClassListJ).find(e -> {
-                    java.util.List subClassJ = (java.util.List) e;
-                    Double d = Try(() -> Double.valueOf(subClassJ.get(0).toString())).getOrElse(0d);
-                    return U.match(subClassIndex, d.intValue());
-                }).get();
-                Object subClassStr = ((java.util.List) subClassObj).get(1);
-                return subClassStr.toString();
-            }).getOrElse("");
-
-            return new ItemDesc().setItemClass(itemClass).setSubClass(subClass);
-        } catch (Exception ex) {
-            log.error("getItemClass fail breadcrumb: {} commaClass: {} ", breadcrumb, commaClass, ex);
-            return new ItemDesc();
-        }
-    }
 }

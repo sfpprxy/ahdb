@@ -1,10 +1,17 @@
 package org.ahdb.server.model;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.sql.Timestamp;
 
 @Entity
+@Getter
+@Setter
+@Accessors(chain = true)
 public class RawData {
 
     @Id
@@ -12,42 +19,6 @@ public class RawData {
     public String type;
     public String accountId;
     public String rawStr;
-
-    public Timestamp getTime() {
-        return time;
-    }
-
-    public RawData setTime(Timestamp timecc) {
-        time = timecc;
-        return this;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public RawData setType(String typecc) {
-        type = typecc;
-        return this;
-    }
-
-    public String getAccountId() {
-        return accountId;
-    }
-
-    public RawData setAccountId(String accountIdcc) {
-        accountId = accountIdcc;
-        return this;
-    }
-
-    public String getRawStr() {
-        return rawStr;
-    }
-
-    public RawData setRawStr(String rawStrcc) {
-        rawStr = rawStrcc;
-        return this;
-    }
 
     @Override
     public String toString() {

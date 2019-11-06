@@ -1,10 +1,17 @@
 package org.ahdb.server.model;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.sql.Timestamp;
 
 @Entity
+@Getter
+@Setter
+@Accessors(chain = true)
 public class RawLog {
 
     @Id
@@ -12,30 +19,4 @@ public class RawLog {
     public String type;
     public String rawStr;
 
-    public Timestamp getTime() {
-        return time;
-    }
-
-    public RawLog setTime(Timestamp timecc) {
-        time = timecc;
-        return this;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public RawLog setType(String typecc) {
-        type = typecc;
-        return this;
-    }
-
-    public String getRawStr() {
-        return rawStr;
-    }
-
-    public RawLog setRawStr(String rawStrcc) {
-        rawStr = rawStrcc;
-        return this;
-    }
 }

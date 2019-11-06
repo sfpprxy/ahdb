@@ -21,6 +21,26 @@ public class QueryService {
     final ItemDescService itemDescService;
     final CacheService cacheService;
 
+    public void ipFilter(String ip) {
+        log.info("empty accountId IP {}", ip);
+
+        IpStats ipst = cacheService.getIpStats(ip);
+        log.debug("timesToday {} last query {}", ipst.timesToday, ipst.lastQuery);
+
+        if (ipst.lastQuery.isBefore(U.dateTimeNow().minusDays(1))) {
+            ipst.setTimesToday(0);
+        }
+        if (ipst.timesToday > 10) {
+            throw new AhdbUserException(AhdbUserException.NO_FREE);
+        }
+
+        ipst.setTimesToday(ipst.timesToday + 2);
+        ipst.setLastQuery(U.dateTimeNow());
+        log.debug("timesToday {} last query {}", ipst.timesToday, ipst.lastQuery);
+
+        cacheService.setIpStats(ip, ipst);
+    }
+
     public ItemStats queryItemStats(String accountId, String item, String ip) {
         String chars = accountService.getStats(accountId).chars;
         String msg = U.fstr("{} queryItemStats {}", chars, item);
@@ -59,26 +79,6 @@ public class QueryService {
         }
 
         return itemStats;
-    }
-
-    public void ipFilter(String ip) {
-        log.info("empty accountId IP {}", ip);
-
-        IpStats ipst = cacheService.getIpStats(ip);
-        log.debug("timesToday {} last query {}", ipst.timesToday, ipst.lastQuery);
-
-        if (ipst.lastQuery.isBefore(U.dateTimeNow().minusDays(1))) {
-            ipst.setTimesToday(0);
-        }
-        if (ipst.timesToday > 10) {
-            throw new AhdbUserException(AhdbUserException.NO_FREE);
-        }
-
-        ipst.setTimesToday(ipst.timesToday + 2);
-        ipst.setLastQuery(U.dateTimeNow());
-        log.debug("timesToday {} last query {}", ipst.timesToday, ipst.lastQuery);
-
-        cacheService.setIpStats(ip, ipst);
     }
 
 }

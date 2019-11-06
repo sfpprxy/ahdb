@@ -1,11 +1,11 @@
 package org.ahdb.server;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.ahdb.server.model.RawData;
 import org.ahdb.server.model.ValuableData;
 import org.ahdb.server.model.ValuableDataByAccount;
 import org.ahdb.server.util.U;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,12 +13,12 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class RawDataService {
-    private static final Logger log = LoggerFactory.getLogger(RawDataService.class);
 
-    @Autowired
-    RawDataRepository rawDataRepository;
+    final RawDataRepository rawDataRepository;
 
     public void save(ValuableDataByAccount dataByA, Timestamp createTime) {
         try {

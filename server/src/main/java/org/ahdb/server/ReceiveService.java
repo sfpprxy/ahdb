@@ -23,26 +23,6 @@ public class ReceiveService {
     final AccountService accountService;
     final RawLogService rawLogService;
 
-    public Boolean receive(List<ValuableDataByAccount> lvaluableDataByAccount) {
-        try {
-            for (ValuableDataByAccount dataByA : lvaluableDataByAccount) {
-                log.info("raw data received from account {}", dataByA.accountId);
-                rawLogService.log("receive", dataByA.accountId);
-
-                Timestamp createTime = new Timestamp(System.currentTimeMillis());
-
-                rawDataService.save(dataByA, createTime);
-
-                processRaw(dataByA, createTime);
-            }
-            return true;
-        } catch (Exception ex) {
-            log.error("receive fail {}", U.stackTrace(ex));
-            rawLogService.log("receive fail", U.stackTrace(ex));
-            return false;
-        }
-    }
-
     public void processRaw(ValuableDataByAccount dataByA, Timestamp createTime) {
         if (U.match("debug", dataByA.type)) {
             log.debug("debug rawData received -> drop");
@@ -68,6 +48,26 @@ public class ReceiveService {
 
         if (shouldFetchDesc) {
             itemDescService.save(lis);
+        }
+    }
+
+    public Boolean receive(List<ValuableDataByAccount> lvaluableDataByAccount) {
+        try {
+            for (ValuableDataByAccount dataByA : lvaluableDataByAccount) {
+                log.info("raw data received from account {}", dataByA.accountId);
+                rawLogService.log("receive", dataByA.accountId);
+
+                Timestamp createTime = new Timestamp(System.currentTimeMillis());
+
+                rawDataService.save(dataByA, createTime);
+
+                processRaw(dataByA, createTime);
+            }
+            return true;
+        } catch (Exception ex) {
+            log.error("receive fail {}", U.stackTrace(ex));
+            rawLogService.log("receive fail", U.stackTrace(ex));
+            return false;
         }
     }
 

@@ -1,27 +1,16 @@
 package org.ahdb.server.model;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
+@Getter
+@Setter
+@Accessors(chain = true)
 public class ValuableData {
 
     public String chars;
     public String auctionDBScan;
-
-    public String getChars() {
-        return chars;
-    }
-
-    public ValuableData setChars(String charscc) {
-        chars = charscc;
-        return this;
-    }
-
-    public String getAuctionDBScan() {
-        return auctionDBScan;
-    }
-
-    public ValuableData setAuctionDBScan(String auctionDBScancc) {
-        auctionDBScan = auctionDBScancc;
-        return this;
-    }
 
     @Override
     public String toString() {

@@ -10,6 +10,8 @@ import java.sql.Timestamp;
 @Setter
 @Accessors(chain = true)
 public class DailyStat {
+
     public Timestamp day;
     public Integer avgMarket;
+
 }

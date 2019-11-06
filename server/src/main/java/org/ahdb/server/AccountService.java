@@ -35,6 +35,42 @@ public class AccountService {
         return vo;
     }
 
+    private void charge(AccountStats accountStats, Integer quantity) {
+        log.debug("into charge");
+        AccountStats as = accountStatsRepository.findById(accountStats.accountId).orElse(new AccountStats());
+        if (as.accountId == null) {
+            as.setAccountId(accountStats.accountId)
+                    .setChars(accountStats.chars)
+                    .setPower(quantity)
+                    .setLastPush(accountStats.lastPush);
+        } else {
+            int t = as.power + quantity;
+            log.debug("power {}", t);
+            if (t > 1000) {
+                t = 1000;
+            }
+            as.setPower(t);
+        }
+        log.debug("charge = {} {} {}", as.accountId, as.chars, as.power);
+        accountStatsRepository.save(as);
+    }
+
+    private boolean consume(String accountId, Integer quantity) {
+        AccountStats as = accountStatsRepository.findById(accountId).orElse(new AccountStats());
+        if (as.accountId == null) {
+            log.warn("account {} does not exist", accountId);
+        } else {
+            int t = as.power - quantity;
+            if (t < 0) {
+                return false;
+            }
+            as.setPower(t);
+        }
+        log.debug("consume = {} {} {}", as.accountId, as.chars, as.power);
+        accountStatsRepository.save(as);
+        return true;
+    }
+
     @Transactional
     public void chargeByPush(AccountStats accountStats) {
         String id = accountStats.accountId;
@@ -83,39 +119,4 @@ public class AccountService {
         return consume(accountId, cp);
     }
 
-    private void charge(AccountStats accountStats, Integer quantity) {
-        log.debug("into charge");
-        AccountStats as = accountStatsRepository.findById(accountStats.accountId).orElse(new AccountStats());
-        if (as.accountId == null) {
-            as.setAccountId(accountStats.accountId)
-                    .setChars(accountStats.chars)
-                    .setPower(quantity)
-                    .setLastPush(accountStats.lastPush);
-        } else {
-            int t = as.power + quantity;
-            log.debug("power {}", t);
-            if (t > 1000) {
-                t = 1000;
-            }
-            as.setPower(t);
-        }
-        log.debug("charge = {} {} {}", as.accountId, as.chars, as.power);
-        accountStatsRepository.save(as);
-    }
-
-    private boolean consume(String accountId, Integer quantity) {
-        AccountStats as = accountStatsRepository.findById(accountId).orElse(new AccountStats());
-        if (as.accountId == null) {
-            log.warn("account {} does not exist", accountId);
-        } else {
-            int t = as.power - quantity;
-            if (t < 0) {
-                return false;
-            }
-            as.setPower(t);
-        }
-        log.debug("consume = {} {} {}", as.accountId, as.chars, as.power);
-        accountStatsRepository.save(as);
-        return true;
-    }
 }

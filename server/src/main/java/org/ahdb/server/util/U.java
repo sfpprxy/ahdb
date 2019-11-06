@@ -35,8 +35,28 @@ public class U {
         return false;
     }
 
-    public static String fixedLenStr(String string, int fixedLen) {
-        return fixedLenStr(string, fixedLen, false);
+    public static int length(Object o) {
+        if (o == null) {
+            return 4; // length of literal null
+        }
+        if (o instanceof Number) {
+            return o.toString().length();
+        }
+        if (o instanceof String) {
+            String str = (String) o;
+            int valueLength = 0;
+            String chinese = "[\u0391-\uFFE5]";
+            for (int i = 0; i < str.length(); i++) {
+                String temp = str.substring(i, i + 1);
+                if (temp.matches(chinese)) {
+                    valueLength += 2;
+                } else {
+                    valueLength += 1;
+                }
+            }
+            return valueLength;
+        }
+        return ((String) o).length();
     }
 
     public static String fixedLenStr(String string, int fixedLen, boolean leftPad) {
@@ -61,28 +81,8 @@ public class U {
         return String.format(pad + padLen + "s", string);
     }
 
-    public static int length(Object o) {
-        if (o == null) {
-            return 4; // length of literal null
-        }
-        if (o instanceof Number) {
-            return o.toString().length();
-        }
-        if (o instanceof String) {
-            String str = (String) o;
-            int valueLength = 0;
-            String chinese = "[\u0391-\uFFE5]";
-            for (int i = 0; i < str.length(); i++) {
-                String temp = str.substring(i, i + 1);
-                if (temp.matches(chinese)) {
-                    valueLength += 2;
-                } else {
-                    valueLength += 1;
-                }
-            }
-            return valueLength;
-        }
-        return ((String) o).length();
+    public static String fixedLenStr(String string, int fixedLen) {
+        return fixedLenStr(string, fixedLen, false);
     }
 
     public static <K, V> Map<K, V> zipToMap(List<K> keys, List<V> values) {
@@ -197,6 +197,12 @@ public class U {
     public static class Timer {
         long start;
         long last;
+
+        public void doEveryXSeconds(Integer x) {
+            // TODO: impl 用来显示长时间的流式任务状态
+
+        }
+
         public Timer() {
             start = System.currentTimeMillis();
         }

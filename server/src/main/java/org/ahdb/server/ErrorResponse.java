@@ -8,5 +8,7 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 public class ErrorResponse {
+
      public String message;
+
 }
