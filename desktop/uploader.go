@@ -9,7 +9,7 @@ func upload(data []ValuableDataByAccount) bool {
 	check(e)
 
 	body, e := post(getUploadUrl(), b)
-	if check(e) {
+	if e != nil {
 		return false
 	}
 

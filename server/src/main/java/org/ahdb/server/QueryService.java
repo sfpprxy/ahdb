@@ -99,22 +99,22 @@ public class QueryService {
                             s.itemClass,
                             s.subClass);
                     String stats = String.join(",", s0);
-                    String item = U.fstr("[\"{}\"]=\"{}\",", s.id, stats);
+                    String item = U.fstr("        [\"{}\"]=\"{}\",", s.id, stats);
                     return item;
                 })
                 .collect(Collectors.joining("\n"));
 
         String itemStats = "[\"itemStats\"] = {\n" +
                       U.fstr("{}", content) +
-                      "\n},";
+                      "\n    },";
 
         if (U.empty(accountId) || U.match(accountId, "null")) {
             throw new AhdbUserException(AhdbUserException.NO_POWER);
         }
-        boolean powerEnough = accountService.consumeByQueryAll(accountId);
-        if (!powerEnough) {
-            throw new AhdbUserException(AhdbUserException.NO_POWER);
-        }
+//        boolean powerEnough = accountService.consumeByQueryAll(accountId);
+//        if (!powerEnough) {
+//            throw new AhdbUserException(AhdbUserException.NO_POWER);
+//        }
 
         return itemStats;
     }

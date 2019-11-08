@@ -31,6 +31,10 @@ func getAccountStatsUrl() string {
 	return getBaseUrl() + "/account-stats"
 }
 
+func getItemStatsUrl() string {
+	return getBaseUrl() + "/all-item-stats"
+}
+
 func loadConf() (error, Config) {
 	var c Config
 	b, err := ioutil.ReadFile(confFile)

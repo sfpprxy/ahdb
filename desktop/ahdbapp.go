@@ -91,6 +91,15 @@ func mainui() {
 		chooseBtn := ui.NewButton("选择Wow.exe")
 		box.Append(chooseBtn, true)
 
+		hbox := ui.NewHorizontalBox()
+		box.Append(hbox, true)
+
+		installBtn := ui.NewButton("安装最新插件")
+		hbox.Append(installBtn, true)
+
+		fetchItemStatsBtn := ui.NewButton("更新插件数据")
+		hbox.Append(fetchItemStatsBtn, true)
+
 		hideBtn := ui.NewButton("隐藏到托盘")
 		box.Append(hideBtn, true)
 
@@ -99,6 +108,17 @@ func mainui() {
 
 		chooseBtn.OnClicked(func(*ui.Button) {
 			saveWowPath(ui.OpenFile(mainwin))
+		})
+
+		installBtn.OnClicked(func(*ui.Button) {
+			// todo impl installBtn
+		})
+
+		fetchItemStatsBtn.OnClicked(func(*ui.Button) {
+			stats := fetchItemStats()
+			if len(stats) > 0 {
+				writeItemStats(stats)
+			}
 		})
 
 		hideBtn.OnClicked(func(*ui.Button) {
