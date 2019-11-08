@@ -13,14 +13,9 @@ from item_desc
 where item_desc.name != '!奥术水晶'
 order by scan_time desc;
 
-select count(scan_time)
-from item_desc
-         join item_scan
-              on item_desc.id = item_scan.item_id
-where item_desc.name != '!奥术水晶';
 
 SELECT daily_time_bucket, CAST(daily_avg_market_value AS INTEGER)
 FROM view_daily
-WHERE id = '2592'
+WHERE item_id = '2592'
   AND daily_time_bucket > now() - INTERVAL '14 day'
 ORDER BY daily_time_bucket DESC;
