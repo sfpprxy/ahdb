@@ -119,4 +119,15 @@ public class AccountService {
         return consume(accountId, cp);
     }
 
+    @Transactional
+    public boolean consumeByQueryAll(String accountId) {
+        AccountStats as = accountStatsRepository.findFirstByAccountId(accountId);
+        if (as == null) {
+            log.error("cannot find account {} to consume", accountId);
+            return false;
+        }
+
+        return consume(accountId, 100);
+    }
+
 }

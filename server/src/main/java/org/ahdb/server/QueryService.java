@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -76,6 +77,43 @@ public class QueryService {
             if (!powerEnough) {
                 throw new AhdbUserException(AhdbUserException.NO_POWER);
             }
+        }
+
+        return itemStats;
+    }
+
+    public String queryAllItemStats(String accountId) {
+        List<List<Object>> raw = queryRepository.queryAllItemStats();
+        Stream<Day14Stat> all = raw.stream()
+                .map(tuple -> U.tupleToBean(tuple, Day14Stat.class));
+
+        String content = all
+                .map(s -> {
+                    List<String> s0 = U.list(
+                            s.vIndex.toString(),
+                            s.maxStock.toString(),
+                            s.market.toString(),
+                            s.marketD.toString(),
+                            s.auctions.toString(),
+                            s.quantity.toString(),
+                            s.itemClass,
+                            s.subClass);
+                    String stats = String.join(",", s0);
+                    String item = U.fstr("[\"{}\"]=\"{}\",", s.id, stats);
+                    return item;
+                })
+                .collect(Collectors.joining("\n"));
+
+        String itemStats = "[\"itemStats\"] = {\n" +
+                      U.fstr("{}", content) +
+                      "\n},";
+
+        if (U.empty(accountId) || U.match(accountId, "null")) {
+            throw new AhdbUserException(AhdbUserException.NO_POWER);
+        }
+        boolean powerEnough = accountService.consumeByQueryAll(accountId);
+        if (!powerEnough) {
+            throw new AhdbUserException(AhdbUserException.NO_POWER);
         }
 
         return itemStats;

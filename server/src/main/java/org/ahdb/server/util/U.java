@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -267,7 +268,12 @@ public class U {
             ins = (T) cons[0].newInstance();
             Field[] fs = clz.getDeclaredFields();
             for (int i = 0; i < tuple.size(); i++) {
-                fs[i].set(ins, tuple.get(i));
+                Object val = tuple.get(i);
+                if (val instanceof BigDecimal) {
+                    fs[i].set(ins, ((BigDecimal) val).intValue());
+                } else {
+                    fs[i].set(ins, val);
+                }
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

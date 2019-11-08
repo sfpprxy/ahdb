@@ -40,6 +40,11 @@ public class AhdbController {
         return queryService.queryItemStats(account, item, request.getRemoteAddr());
     }
 
+    @GetMapping(value = "/all-item-stats")
+    public String queryAllItemStats(@RequestParam String account) {
+        return queryService.queryAllItemStats(account);
+    }
+
     @GetMapping(value = "/test-get")
     public ItemStats testGet(HttpServletRequest request) {
         ItemStats is = queryService.queryItemStats("178635643", "毛料", request.getRemoteAddr());
