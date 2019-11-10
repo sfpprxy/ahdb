@@ -5,13 +5,16 @@ import (
 	"strings"
 )
 
-func writeItemStats(itemStats string) {
+func writeItemStats(itemStats string) error {
 	//log.Debug("itemStats", itemStats)
 	fileByAccount := findSavedVariablesByAccount("AuctionDB.lua")
 	log.Debug(fileByAccount)
+	var err error
 	for a, f := range fileByAccount {
 		bytes, e := ioutil.ReadFile(f)
-		check(e)
+		if check(e) {
+			err = e
+		}
 		log.Debug(a)
 		contentStr := string(bytes)
 		contentNew := ""
@@ -32,7 +35,10 @@ func writeItemStats(itemStats string) {
 			contentNew = contentStr[:i2] + "\n    " + itemStats + contentStr[i2:]
 		}
 
-		err := ioutil.WriteFile(f, []byte(contentNew), 0644)
-		check(err)
+		e = ioutil.WriteFile(f, []byte(contentNew), 0644)
+		if check(e) {
+			err = e
+		}
 	}
+	return err
 }

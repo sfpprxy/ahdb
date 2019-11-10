@@ -115,9 +115,16 @@ func mainui() {
 		})
 
 		fetchItemStatsBtn.OnClicked(func(*ui.Button) {
-			stats := fetchItemStats()
-			if len(stats) > 0 {
-				writeItemStats(stats)
+			stats, err := fetchItemStats()
+			if err != nil {
+				ui.MsgBox(mainwin, "失败", err.Error())
+			} else {
+				err := writeItemStats(stats)
+				if err != nil {
+					ui.MsgBox(mainwin, "错误", "更新插件数据失败")
+				} else {
+					ui.MsgBox(mainwin, "成功", "更新插件数据成功")
+				}
 			}
 		})
 
