@@ -33,7 +33,7 @@ WITH bounds AS (
 SELECT id,
        name,
        vindex,
-       round(vindex * quantity * 0.008) AS max_stock,
+       round(vindex * quantity * 0.05) AS max_stock,
        vendor_sell,
        market,
        marketd,

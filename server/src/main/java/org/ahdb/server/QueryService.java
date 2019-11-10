@@ -111,10 +111,10 @@ public class QueryService {
         if (U.empty(accountId) || U.match(accountId, "null")) {
             throw new AhdbUserException(AhdbUserException.NO_POWER);
         }
-//        boolean powerEnough = accountService.consumeByQueryAll(accountId);
-//        if (!powerEnough) {
-//            throw new AhdbUserException(AhdbUserException.NO_POWER);
-//        }
+        boolean powerEnough = accountService.consumeByQueryAll(accountId);
+        if (!powerEnough) {
+            throw new AhdbUserException(AhdbUserException.NO_POWER);
+        }
 
         return itemStats;
     }

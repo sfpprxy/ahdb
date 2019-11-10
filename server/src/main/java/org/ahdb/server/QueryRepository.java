@@ -49,7 +49,7 @@ public interface QueryRepository extends JpaRepository<ItemDesc, String> {
             "SELECT id,\n" +
             "       name,\n" +
             "       vindex,\n" +
-            "       round(vindex * quantity * 0.008) AS max_stock,\n" +
+            "       round(vindex * quantity * 0.05) AS max_stock,\n" +
             "       vendor_sell,\n" +
             "       market,\n" +
             "       marketd,\n" +
