@@ -33,7 +33,12 @@ WITH bounds AS (
 SELECT id,
        name,
        vindex,
-       round(vindex * quantity * 0.05) AS max_stock,
+       greatest(round(
+                        CASE WHEN vindex > 6 THEN
+                                 least((((vindex * 18 + quantity * 7 + auctions * 5 + market * 8) * 0.07)) / 2 - 100, quantity*0.7)
+                             ELSE quantity * 0.1
+                            END
+                    ), 1)AS max_stock,
        vendor_sell,
        market,
        marketd,
@@ -47,7 +52,9 @@ FROM (SELECT id,
              count(id),
              name,
              round(avg(daily_avg_market_value) /
-                   (CASE vendor_sell WHEN 0 THEN item_lv + 1000 ELSE vendor_sell END))    vindex,
+                   (CASE WHEN (vendor_sell = 0) THEN greatest(item_lv * 5, 20)
+                         ELSE vendor_sell + 15
+                       END))    vindex,
              vendor_sell,
              round(avg(daily_avg_market_value))                                           market,
              round(stddev(daily_avg_market_value))                                        marketd,
@@ -67,12 +74,8 @@ FROM (SELECT id,
       GROUP BY id, name, vendor_sell, time_buctet_14day, item_lv, item_class, sub_class) AS a
 WHERE 1 = 1
 --   AND item_class IN ('材料', '消耗品', '杂项')
---   AND sub_class NOT IN ('食物和饮料', '肉类')
---   --AND sub_class IN ('垃圾')
---   --AND name IN ('轻羽毛','皇血草','银矿石','毛料','铁矿石','坚固的石头','粗糙的石头','铜矿石','火焰精华')
---   AND market NOTNULL
---   AND market > 400
---   AND vendor_sell NOT BETWEEN 1 AND 3
---   AND quantity > 100
---   AND vindex > 4
-ORDER BY vindex DESC;
+--   AND sub_class NOT IN ('食物和饮料', '!垃圾')
+--   AND auctions > 10
+--   AND quantity BETWEEN 20 AND 7000
+--   AND vindex > 5
+ORDER BY max_stock DESC;

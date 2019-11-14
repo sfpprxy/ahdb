@@ -49,7 +49,12 @@ public interface QueryRepository extends JpaRepository<ItemDesc, String> {
             "SELECT id,\n" +
             "       name,\n" +
             "       vindex,\n" +
-            "       round(vindex * quantity * 0.05) AS max_stock,\n" +
+            "       greatest(round(\n" +
+            "                        CASE WHEN vindex > 6 THEN\n" +
+            "                                 least((((vindex * 18 + quantity * 7 + auctions * 5 + market * 8) * 0.07)) / 2 - 100, quantity*0.7)\n" +
+            "                             ELSE quantity * 0.1\n" +
+            "                            END\n" +
+            "                    ), 1)AS max_stock,\n" +
             "       vendor_sell,\n" +
             "       market,\n" +
             "       marketd,\n" +
@@ -63,7 +68,9 @@ public interface QueryRepository extends JpaRepository<ItemDesc, String> {
             "             count(id),\n" +
             "             name,\n" +
             "             round(avg(daily_avg_market_value) /\n" +
-            "                   (CASE vendor_sell WHEN 0 THEN item_lv + 1000 ELSE vendor_sell END))    vindex,\n" +
+            "                   (CASE WHEN (vendor_sell = 0) THEN greatest(item_lv * 5, 20)\n" +
+            "                         ELSE vendor_sell + 15\n" +
+            "                       END))    vindex,\n" +
             "             vendor_sell,\n" +
             "             round(avg(daily_avg_market_value))                                           market,\n" +
             "             round(stddev(daily_avg_market_value))                                        marketd,\n" +
@@ -83,15 +90,11 @@ public interface QueryRepository extends JpaRepository<ItemDesc, String> {
             "      GROUP BY id, name, vendor_sell, time_buctet_14day, item_lv, item_class, sub_class) AS a\n" +
             "WHERE 1 = 1\n" +
             "--   AND item_class IN ('材料', '消耗品', '杂项')\n" +
-            "--   AND sub_class NOT IN ('食物和饮料', '肉类')\n" +
-            "--   --AND sub_class IN ('垃圾')\n" +
-            "--   --AND name IN ('轻羽毛','皇血草','银矿石','毛料','铁矿石','坚固的石头','粗糙的石头','铜矿石','火焰精华')\n" +
-            "--   AND market NOTNULL\n" +
-            "--   AND market > 400\n" +
-            "--   AND vendor_sell NOT BETWEEN 1 AND 3\n" +
-            "--   AND quantity > 100\n" +
-            "--   AND vindex > 4\n" +
-            "ORDER BY vindex DESC",
+            "--   AND sub_class NOT IN ('食物和饮料', '!垃圾')\n" +
+            "--   AND auctions > 10\n" +
+            "--   AND quantity BETWEEN 20 AND 7000\n" +
+            "--   AND vindex > 5\n" +
+            "ORDER BY max_stock DESC",
             nativeQuery = true)
     List<List<Object>> queryAllItemStats();
 
