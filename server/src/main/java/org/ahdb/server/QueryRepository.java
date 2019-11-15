@@ -39,7 +39,7 @@ public interface QueryRepository extends JpaRepository<ItemDesc, String> {
     @Query(value =
             "WITH bounds AS (\n" +
             "    SELECT item_id                                                        id0,\n" +
-            "           time_bucket('31 day', daily_time_bucket)                       time_bucket0,\n" +
+            "           time_bucket('9973 day', daily_time_bucket)                       time_bucket0,\n" +
             "           (avg(daily_avg_market_value) - stddev(daily_avg_market_value)) low,\n" +
             "           (avg(daily_avg_market_value) + stddev(daily_avg_market_value)) high\n" +
             "    FROM view_daily\n" +
@@ -79,13 +79,13 @@ public interface QueryRepository extends JpaRepository<ItemDesc, String> {
             "             item_lv,\n" +
             "             item_class,\n" +
             "             sub_class,\n" +
-            "             time_bucket('31 day', daily_time_bucket)                                     time_buctet_14day\n" +
+            "             time_bucket('9973 day', daily_time_bucket)                                     time_buctet_14day\n" +
             "      FROM view_daily,\n" +
             "           bounds\n" +
             "               JOIN item_desc ON item_desc.id = id0\n" +
             "      WHERE daily_time_bucket > cast(now() AS date) - INTERVAL '14 day'\n" +
             "        AND item_id = id0\n" +
-            "        AND time_bucket('31 day', daily_time_bucket) = time_bucket0\n" +
+            "        AND time_bucket('9973 day', daily_time_bucket) = time_bucket0\n" +
             "        AND daily_avg_market_value BETWEEN low AND high\n" +
             "      GROUP BY id, name, vendor_sell, time_buctet_14day, item_lv, item_class, sub_class) AS a\n" +
             "WHERE 1 = 1\n" +

@@ -23,7 +23,7 @@ ORDER BY daily_time_bucket DESC;
 -- queryAllItemStats
 WITH bounds AS (
     SELECT item_id                                                        id0,
-           time_bucket('31 day', daily_time_bucket)                       time_bucket0,
+           time_bucket('9973 day', daily_time_bucket)                       time_bucket0,
            (avg(daily_avg_market_value) - stddev(daily_avg_market_value)) low,
            (avg(daily_avg_market_value) + stddev(daily_avg_market_value)) high
     FROM view_daily
@@ -63,13 +63,13 @@ FROM (SELECT id,
              item_lv,
              item_class,
              sub_class,
-             time_bucket('31 day', daily_time_bucket)                                     time_buctet_14day
+             time_bucket('9973 day', daily_time_bucket)                                     time_buctet_14day
       FROM view_daily,
            bounds
                JOIN item_desc ON item_desc.id = id0
       WHERE daily_time_bucket > cast(now() AS date) - INTERVAL '14 day'
         AND item_id = id0
-        AND time_bucket('31 day', daily_time_bucket) = time_bucket0
+        AND time_bucket('9973 day', daily_time_bucket) = time_bucket0
         AND daily_avg_market_value BETWEEN low AND high
       GROUP BY id, name, vendor_sell, time_buctet_14day, item_lv, item_class, sub_class) AS a
 WHERE 1 = 1
