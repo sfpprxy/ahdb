@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -84,15 +83,38 @@ public class QueryService {
 
     public String queryAllItemStats(String accountId) {
         List<List<Object>> raw = queryRepository.queryAllItemStats();
-        Stream<Day14Stat> all = raw.stream()
-                .map(tuple -> U.tupleToBean(tuple, Day14Stat.class));
+        List<List<Object>> rawEarly = queryRepository.queryAllItemStatsEarly7();
+        List<List<Object>> rawLater = queryRepository.queryAllItemStatsLater7();
+        List<Day14Stat> all = raw.stream().map(tuple -> U.tupleToBean(tuple, Day14Stat.class))
+                .collect(Collectors.toList());
+        List<Day14Stat> early = rawEarly.stream()
+                .map(tuple -> U.tupleToBean(tuple, Day14Stat.class))
+                .collect(Collectors.toList());
+        List<Day14Stat> later = rawLater.stream()
+                .map(tuple -> U.tupleToBean(tuple, Day14Stat.class))
+                .collect(Collectors.toList());
 
-        String content = all
+        String content = io.vavr.collection.List.ofAll(all)
                 .map(s -> {
+                    Day14Stat mayE = io.vavr.collection.List.ofAll(early)
+                            .find(e -> U.match(e.id, s.id)).getOrElse(new Day14Stat().setMarket(0));
+                    Day14Stat mayL = io.vavr.collection.List.ofAll(later)
+                            .find(l -> U.match(l.id, s.id)).getOrElse(new Day14Stat().setMarket(0));
+
+                    if (mayL.market == 0 || mayE.market == 0) {
+                        Day14Stat stat = io.vavr.collection.List.ofAll(all).find(a -> U.match(a.id, s.id)).get();
+                        if (stat.quantity > 60 && stat.vIndex > 6 && stat.auctions > 10) {
+                            log.warn("Exception Item : ID {} NAME {}", s.id, stat.getName());
+                        }
+                    }
+
+                    Integer change = mayL.market - mayE.market;
+
                     List<String> s0 = U.list(
                             s.vIndex.toString(),
                             s.maxStock.toString(),
                             s.market.toString(),
+                            change.toString(),
                             s.marketD.toString(),
                             s.auctions.toString(),
                             s.quantity.toString(),
