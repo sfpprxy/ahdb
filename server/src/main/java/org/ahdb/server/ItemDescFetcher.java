@@ -22,13 +22,13 @@ public class ItemDescFetcher {
         String breadcrumb = "";
         String commaClass = "";
         try {
-            // PageTemplate.set({ breadcrumb: [0,0,2,1]});
-            breadcrumb = "PageTemplate.set({ breadcrumb: ";
+            // WH.Layout.set({breadcrumb: [0, 0, 7,5]});
+            breadcrumb = "breadcrumb: ";
             int index = docStr.indexOf(breadcrumb);
             String sub = docStr.substring(index + breadcrumb.length() + 1, index + breadcrumb.length() + 20);
             // 0,0,2,1
             commaClass = sub.substring(0, sub.indexOf("]"));
-            String[] sp = commaClass.split(",");
+            String[] sp = commaClass.replace(" ", "").split(",");
             Integer itemClassIndex = Integer.valueOf(sp[2]);
             Integer subClassIndex = Integer.valueOf(sp[3]);
 
@@ -55,8 +55,7 @@ public class ItemDescFetcher {
 
             return new ItemDesc().setItemClass(itemClass).setSubClass(subClass);
         } catch (Exception ex) {
-            log.error("getItemClass fail breadcrumb: {} commaClass: {} ", breadcrumb, commaClass, ex);
-            return new ItemDesc();
+            throw new AhdbException(U.fstr("getItemClass fail breadcrumb: {} commaClass: {} ", breadcrumb, commaClass), ex);
         }
     }
 
