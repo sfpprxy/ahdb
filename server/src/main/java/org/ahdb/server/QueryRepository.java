@@ -2,6 +2,7 @@ package org.ahdb.server;
 
 import org.ahdb.server.model.ItemDesc;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -221,5 +222,9 @@ public interface QueryRepository extends JpaRepository<ItemDesc, String> {
                     "ORDER BY max_stock DESC",
             nativeQuery = true)
     List<List<Object>> queryAllItemStatsLater7();
+
+    @Modifying
+    @Query(value = "REFRESH MATERIALIZED VIEW view_daily", nativeQuery = true)
+    void refreshDay14ItemStats();
 
 }

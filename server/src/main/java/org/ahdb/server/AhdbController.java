@@ -46,8 +46,7 @@ public class AhdbController {
     }
 
     @GetMapping(value = "/test-get")
-    public ItemStats testGet(HttpServletRequest request) {
-        ItemStats is = queryService.queryItemStats("178635643", "毛料", request.getRemoteAddr());
-        return is;
+    public String testGet(HttpServletRequest request) {
+        return "OK";
     }
 }
