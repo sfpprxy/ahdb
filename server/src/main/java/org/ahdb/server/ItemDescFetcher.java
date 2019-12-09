@@ -98,7 +98,7 @@ public class ItemDescFetcher {
                     .setIcon(icon);
 
         } catch (Exception ex) {
-            log.error("getDesc fail item itemId {} name {} ", id, name, ex);
+            log.error("getDesc fail item itemId {} name {} reason: {}", id, name, ex , ex);
             return null;
         }
     }
