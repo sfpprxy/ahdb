@@ -13,6 +13,9 @@ public class ValuableDataParser {
 
     public static List<ItemScan> getItemScanList(ValuableData dataByA) {
         String raw = dataByA.auctionDBScan;
+        if (raw.isEmpty()) {
+            throw new AhdbException("getItemScanList fail - Empty auctionDBScan data");
+        }
         List<String> l = List.of(raw.split("\\\\n"));
         if (!Objects.equals("itemString,minBuyout,marketValue,numAuctions,quantity,lastScan", l.head())) {
             throw new AhdbException("getItemScanList fail - TSM AuctionDBScan format changed: " + raw);
