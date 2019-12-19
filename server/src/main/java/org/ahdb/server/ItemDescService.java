@@ -34,7 +34,7 @@ public class ItemDescService {
     }
 
     public ItemDesc getItem(String item) {
-        java.util.List<ItemDesc> descs = findItems(item);
+        java.util.List<ItemDesc> descs = itemDescRepository.findByIdOrName(item, item);
         ItemDesc desc = descs.get(0);
         return desc;
     }

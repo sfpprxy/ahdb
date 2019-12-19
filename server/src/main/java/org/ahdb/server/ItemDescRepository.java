@@ -13,4 +13,6 @@ public interface ItemDescRepository extends JpaRepository<ItemDesc, String> {
 
     List<ItemDesc> findTop10ByIdOrNameContains(String id, String name);
 
+    List<ItemDesc> findByIdOrName(String id, String name);
+
 }
