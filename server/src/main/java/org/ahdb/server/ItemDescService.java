@@ -25,12 +25,17 @@ public class ItemDescService {
     private ForkJoinPool pool;
     private BlockingQueue<ItemDesc> descQueue;
 
-    public ItemDesc getItem(String item) {
-        List<ItemDesc> descs = List.ofAll(itemDescRepository.findByIdOrNameLike(item, item));
+    public java.util.List<ItemDesc> findItems(String item) {
+        List<ItemDesc> descs = List.ofAll(itemDescRepository.findTop10ByIdOrNameContains(item, item));
         if (descs.isEmpty()) {
             throw new AhdbUserException(AhdbUserException.NO_ITEM);
         }
-        ItemDesc desc = descs.get();
+        return descs.asJava();
+    }
+
+    public ItemDesc getItem(String item) {
+        java.util.List<ItemDesc> descs = findItems(item);
+        ItemDesc desc = descs.get(0);
         return desc;
     }
 

@@ -2,9 +2,7 @@ package org.ahdb.server;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.ahdb.server.model.AccountStatsVO;
-import org.ahdb.server.model.ItemStats;
-import org.ahdb.server.model.ValuableDataByAccount;
+import org.ahdb.server.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +18,7 @@ public class AhdbController {
     final ReceiveService receiveService;
     final AccountService accountService;
     final QueryService queryService;
+    final ItemDescService itemDescService;
 
     @PostMapping(value = "/push")
     public String receive(@RequestBody List<ValuableDataByAccount> valuableDataByAccount) {
@@ -33,6 +32,11 @@ public class AhdbController {
     @GetMapping(value = "/account-stats")
     public AccountStatsVO getAccountStats(@RequestParam String account) {
         return accountService.getStats(account);
+    }
+
+    @GetMapping(value = "/find-items")
+    public List<ItemDesc> findItems(@RequestParam String item) {
+        return itemDescService.findItems(item);
     }
 
     @GetMapping(value = "/item-stats")

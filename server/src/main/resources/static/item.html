@@ -40,7 +40,9 @@
         <script type="module" src="item.js"></script>
 
           <form id="searchForm">
-              <input id="searchBox" type="text" placeholder="输入物品名称或ID">
+              <input id="searchBox" type="text" placeholder="输入物品名称或ID" list="itemList">
+              <datalist id="itemList">
+              </datalist>
               <button id="searchBtn" type="button">查询</button>
           </form>
 

@@ -18,7 +18,6 @@ window.onload = function () {
                 eid('itemName').textContent = (is.itemDesc.name)
 
                 const mt = $("#marketTable tbody");
-                console.log(mt);
 
                 // todo fix timezone issue
                 const at = is.at.slice(0, 10) + ' ' + is.at.slice(11, 16);
