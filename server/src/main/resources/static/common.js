@@ -22,6 +22,7 @@ let itemList = eid('itemList');
 async function submitInputJob() {
     let lastVal = searchBox.value;
     while (true) {
+        searchBox.value = searchBox.value.trim();
         await sleep(500);
         if (lastVal !== searchBox.value) {
             lastVal = searchBox.value;
