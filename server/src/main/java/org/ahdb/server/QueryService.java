@@ -82,7 +82,27 @@ public class QueryService {
         return itemStats;
     }
 
+    public String buildItemStats(String content) {
+        return "[\"itemStats\"] = {\n" +
+                U.fstr("{}", content) +
+                "\n    },";
+    }
+
+    public void usePowerByQueryAll(String accountId) {
+        if (U.empty(accountId) || U.match(accountId, "null")) {
+            throw new AhdbUserException(AhdbUserException.NO_POWER);
+        }
+        boolean powerEnough = accountService.consumeByQueryAll(accountId);
+        if (!powerEnough) {
+            throw new AhdbUserException(AhdbUserException.NO_POWER);
+        }
+    }
+
     public String queryAllItemStats(String accountId) {
+        return queryAllItemStatsBy14Day(accountId);
+    }
+
+    public String queryAllItemStatsBy14Day(String accountId) {
         List<List<Object>> raw = queryRepository.queryAllItemStats();
         List<List<Object>> rawEarly = queryRepository.queryAllItemStatsEarly7();
         List<List<Object>> rawLater = queryRepository.queryAllItemStatsLater7();
@@ -127,19 +147,9 @@ public class QueryService {
                 })
                 .collect(Collectors.joining("\n"));
 
-        String itemStats = "[\"itemStats\"] = {\n" +
-                      U.fstr("{}", content) +
-                      "\n    },";
+        usePowerByQueryAll(accountId);
 
-        if (U.empty(accountId) || U.match(accountId, "null")) {
-            throw new AhdbUserException(AhdbUserException.NO_POWER);
-        }
-        boolean powerEnough = accountService.consumeByQueryAll(accountId);
-        if (!powerEnough) {
-            throw new AhdbUserException(AhdbUserException.NO_POWER);
-        }
-
-        return itemStats;
+        return buildItemStats(content);
     }
 
     @Transactional

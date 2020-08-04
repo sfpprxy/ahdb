@@ -35,6 +35,9 @@ public class ItemDescService {
 
     public ItemDesc getItem(String item) {
         java.util.List<ItemDesc> descs = itemDescRepository.findByIdOrName(item, item);
+        if (descs.isEmpty()) {
+            throw new AhdbUserException(AhdbUserException.NO_ITEM);
+        }
         ItemDesc desc = descs.get(0);
         return desc;
     }
