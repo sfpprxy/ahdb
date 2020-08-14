@@ -15,5 +15,5 @@ echo '> package'
 mvn -Dmaven.test.skip=true package
 
 echo '> start'
-nohup java -Xmx256m -Dprofile=prod -Dserver.port=9999 \
+nohup java -Xmx128m -Dprofile=prod -Dserver.port=9999 \
 -jar target/ahdbserver-1.3.1.jar  >> ./ahdbserver.log &
