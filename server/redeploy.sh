@@ -5,8 +5,9 @@ echo JVAR is ${JVAR}
 
 echo V1
 echo ${V1}
+echo "$V1"
 echo V2
-echo ${V2}
+echo V2
 
 echo '> package'
 
