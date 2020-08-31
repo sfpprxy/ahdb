@@ -62,7 +62,7 @@ public class ItemDescService {
     }
 
     public void save(List<ItemScan> lis) {
-        // TODO: test findIdsByIdNotNull
+        // TODO: fix java.lang.ClassCastException: org.ahdb.model.ItemDesc incompatible with org.ahdb.model.IdsOnly
         Set<String> dbIds = List.ofAll(itemDescRepository.findIdsByIdNotNull()).map(IdsOnly::getId).toSet();
         Set<String> isIds = lis.map(is -> is.getItemId()).toSet();
         Set<String> newIds = isIds.diff(dbIds);

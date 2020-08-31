@@ -6,6 +6,8 @@ import io.quarkus.runtime.annotations.QuarkusMain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
+
 @QuarkusMain
 public class Main {
 
@@ -19,7 +21,8 @@ public class Main {
 
         @Override
         public int run(String... args) throws Exception {
-            log.info("application started {}", "joe");
+            log.info("application started at {}", new Date());
+            log.debug("application log debug level enabled");
             // TODO: write the fucking pid file
             Quarkus.waitForExit();
             return 0;
