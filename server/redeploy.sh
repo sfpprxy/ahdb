@@ -15,6 +15,12 @@ echo ${V4}
 V5=${V1}+BBB=${V2}
 echo ${V5}
 
+if [ ${V1} == "V1V1" ]; then
+  echo "=="
+else
+  echo "!="
+fi
+
 echo '> package'
 
 echo '> start'
