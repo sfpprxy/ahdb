@@ -15,16 +15,16 @@ echo ${V4}
 V5=${V1}+BBB=${V2}
 echo ${V5}
 
-if [ ${port} == "-Dquarkus.http.port -Dquarkus.http.port" ]; then
-  echo "port=="
+if [ ${DB} == "-Dquarkus.http.port" ]; then
+  echo "11=="
 else
-  echo "port!="
+  echo "11!="
 fi
 
-if [ ${PORT} == "-Dquarkus.http.port -Dquarkus.http.port" ]; then
-  echo "PORT=="
+if [ "${DB}" == "-Dquarkus.http.port" ]; then
+  echo "22=="
 else
-  echo "PORT!="
+  echo "22!="
 fi
 
 echo '> package'
