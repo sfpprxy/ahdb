@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+echo pwd
+echo ${pwd}
+pwd
+
 echo '> env keys'
 echo GVAR is ${GVAR}
 echo JVAR is ${JVAR}
@@ -28,5 +32,6 @@ else
 fi
 
 echo '> package'
+mvn package -Pnative
 
 echo '> start'
