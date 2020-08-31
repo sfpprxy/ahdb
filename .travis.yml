@@ -22,4 +22,5 @@ install:
   - native-image --version
 
 script:
+  cd server
   # Run GraalVM Native Image compilation
