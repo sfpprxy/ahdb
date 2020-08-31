@@ -22,7 +22,7 @@ install:
   - native-image --version
 
 script:
-  cd server
+  bash server/redeploy.sh
   # Run GraalVM Native Image compilation
 #  ./redeploy.sh
 
