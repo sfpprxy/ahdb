@@ -7,7 +7,7 @@ echo V1
 echo ${V1}
 echo "$V1"
 echo V2
-echo V2
+echo $V2
 
 echo '> package'
 
