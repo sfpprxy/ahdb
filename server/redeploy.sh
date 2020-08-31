@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 echo '> env keys'
-echo myname is ${myname}
-echo MY_SECRET_ENV
-echo ${MY_SECRET_ENV}
-echo MY_SECRET_ENV2
-echo ${MY_SECRET_ENV2}
+echo GVAR is ${GVAR}
+echo JVAR is ${JVAR}
+
+echo V1
+echo ${V1}
+echo V2
+echo ${V2}
 
 echo '> package'
 
