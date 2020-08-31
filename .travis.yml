@@ -24,7 +24,7 @@ install:
 script:
   cd server
   # Run GraalVM Native Image compilation
-  bash redeploy.sh
+  ./redeploy.sh
 
 env:
   global:
