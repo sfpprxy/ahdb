@@ -4,8 +4,7 @@ install:
   # Install GraalVM with SDKMAN
   - curl -s "https://get.sdkman.io" | bash
   - source "$HOME/.sdkman/bin/sdkman-init.sh"
-  - sdk list java
-#  - sdk install java 20.2.0-grl
+  - sdk install java 20.2.0.r11-grl
 
   # Check if GraalVM was installed successfully
   - java -version
@@ -25,3 +24,9 @@ install:
 script:
   cd server
   # Run GraalVM Native Image compilation
+
+env:
+  global:
+    - myname=joejoejoe
+  jobs:
+    - myname=gagaga
