@@ -7,5 +7,9 @@ pwd
 #./mvnw package -Pnative
 
 echo '> deploy'
-ls ./target
+du -sh ./target/*
+echo '> copy jar'
+scp -P4422 ./target/ahdbserver-1.3.2-SNAPSHOT.jar root@"$SERVER_HOST":~/ahdb/server
+echo '> copy runner'
 scp -P4422 ./target/ahdbserver-1.3.2-SNAPSHOT-runner root@"$SERVER_HOST":~/ahdb/server
+echo '> copy runner ok'
