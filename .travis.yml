@@ -13,8 +13,7 @@ before_install:
   - openssl aes-256-cbc -K $encrypted_6ffa3714fb6c_key -iv $encrypted_6ffa3714fb6c_iv
     -in travis_rsa.enc -out ./travis_rsa -d
   - eval "$(ssh-agent -s)"
-  - pwd
-  - ls
+  - pwd;ls
   - chmod 600 ./travis_rsa
   - echo -e "Host $SERVER_HOST\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
   - ssh-add ./travis_rsa
