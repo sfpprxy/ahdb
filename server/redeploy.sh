@@ -31,8 +31,6 @@ else
   echo "22!="
 fi
 
-echo $SERVER_HOST
-echo ${SERVER_HOST}
 echo "$SERVER_HOST"
 
 echo '> package'
@@ -41,4 +39,4 @@ echo '> package'
 echo '> start'
 touch rq
 cat "mama" > rq
-scp rq -p 4422 root@$SERVER_HOST:~/ahdb/server
+scp rq -p 4422 root@"$SERVER_HOST":~/ahdb/server
