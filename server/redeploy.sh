@@ -2,9 +2,9 @@
 echo "> pwd"
 pwd
 
-echo '> package'
-./mvnw -version
-./mvnw package -Pnative
+#echo '> package'
+#./mvnw -version
+#./mvnw package -Pnative
 
 echo '> deploy'
 ls ./target/ahdbserver-1.3.2-SNAPSHOT-runner

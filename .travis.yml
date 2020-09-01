@@ -24,15 +24,15 @@ install:
   - curl -s "https://get.sdkman.io" | bash
   - source "$HOME/.sdkman/bin/sdkman-init.sh"
   - sdk install java 20.2.0.r11-grl
-
   # Check if GraalVM was installed successfully
   - java -version
-
   # Install GraalVM Native Image
   - gu install native-image
-
   # Check if Native Image was installed properly
   - native-image --version
+  # build the quarkus app
+  - ./mvnw -version
+  - ./mvnw package -Pnative
 
 script:
   - cd server
