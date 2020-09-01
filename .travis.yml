@@ -21,10 +21,6 @@ install:
 #  # Check if Native Image was installed properly
 #  - native-image --version
 
-script:
-  - cd server
-  - bash redeploy.sh
-
 addons:
   ssh_known_hosts:
     - sh.asdk.io
@@ -44,3 +40,7 @@ before_install:
   - echo -e "Host $SERVER_HOST\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
   - ssh-add ./travis_rsa
 #  - ssh -i ./travis_rsa root@$SERVER_HOST pwd
+
+script:
+  - cd server
+  - bash redeploy.sh
