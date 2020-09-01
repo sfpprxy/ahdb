@@ -31,9 +31,9 @@ install:
   # Check if Native Image was installed properly
   - native-image --version
   # build the quarkus app
+  - cd server
   - ./mvnw -version
   - ./mvnw package -Pnative
 
 script:
-  - cd server
   - bash redeploy.sh
