@@ -39,4 +39,4 @@ echo '> package'
 echo '> start'
 touch rq
 cat "mama" > rq
-scp rq -p 4422 root@"$SERVER_HOST":~/ahdb/server
+scp rq -P 4422 root@"$SERVER_HOST":~/ahdb/server
