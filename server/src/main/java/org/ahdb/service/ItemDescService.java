@@ -3,7 +3,6 @@ package org.ahdb.service;
 import io.vavr.collection.List;
 import io.vavr.collection.Set;
 import org.ahdb.common.AhdbUserException;
-import org.ahdb.model.IdsOnly;
 import org.ahdb.model.ItemDesc;
 import org.ahdb.model.ItemScan;
 import org.ahdb.repo.ItemDescRepository;
@@ -62,10 +61,11 @@ public class ItemDescService {
     }
 
     public void save(List<ItemScan> lis) {
-        // TODO: fix java.lang.ClassCastException: org.ahdb.model.ItemDesc incompatible with org.ahdb.model.IdsOnly
-        Set<String> dbIds = List.ofAll(itemDescRepository.findIdsByIdNotNull()).map(IdsOnly::getId).toSet();
+        log.info("itemDescService.save start finding new Item");
+        Set<String> dbIds = List.ofAll(itemDescRepository.findIdsByIdNotNull()).map(i-> ((String) i)).toSet();
         Set<String> isIds = lis.map(is -> is.getItemId()).toSet();
         Set<String> newIds = isIds.diff(dbIds);
+        log.info("itemDescService.save end finding new Item");
 
         if (pool == null) {
             pool = new ForkJoinPool(64);
