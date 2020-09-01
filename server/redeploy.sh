@@ -26,6 +26,7 @@ echo '> env keys'
 echo "$SERVER_HOST"
 
 echo '> package'
+./mvnw -version
 #mvn package -Pnative
 
 echo '> start'
