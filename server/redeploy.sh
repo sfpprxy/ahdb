@@ -29,9 +29,9 @@ ls -l ./travis_rsa
 ssh -t -i ./travis_rsa -p 4422 root@"$SERVER_HOST" <<"EOF"
 pwd; du -sh *
 echo link on remote
-echo "$link"
+echo $link
 cd ~/ahdb/server
-wget "$link"
+wget $link
 EOF
 
 echo '> copy runner'
