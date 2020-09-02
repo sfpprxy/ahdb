@@ -17,7 +17,7 @@ before_install:
   - chmod 600 ./travis_rsa
   - echo -e "Host $SERVER_HOST\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
   - ssh-add ./travis_rsa
-#  - ssh -i ./travis_rsa root@$SERVER_HOST pwd
+  - ssh -i ./travis_rsa root@$SERVER_HOST pwd;ls
 
 install:
 #  # Install GraalVM with SDKMAN
@@ -36,4 +36,4 @@ install:
 #  - ./mvnw package -Pnative
 
 script:
-  - bash redeploy.sh
+#  - bash redeploy.sh
