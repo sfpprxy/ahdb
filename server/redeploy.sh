@@ -14,9 +14,10 @@ wget https://hub.fastgit.org/Mikubill/transfer/releases/download/v0.4.7/transfer
 tar xzvf transfer_0.4.7_linux_amd64.tar.gz
 
 echo '> upload jar'
+EXE_NAME="myfile.txt"
 #./transfer cow ./target/ahdbserver-1.3.2-SNAPSHOT-runner | grep 'Download Link: ' | cut -d' ' -f3 >> link.txt
-echo "Some text here." > myfile.txt
-./transfer cow myfile.txt | grep 'Download Link: ' | cut -d' ' -f3 >> link.txt
+echo "Some text here." > $EXE_NAME
+./transfer cow $EXE_NAME | grep 'Download Link: ' | cut -d' ' -f3 >> link.txt
 link=$(cat link.txt)
 echo link on travis
 echo "$link"
@@ -28,6 +29,7 @@ pwd; du -sh *
 echo link on remote
 echo $link
 cd ~/ahdb/server
+mv $EXE_NAME $EXE_NAME.old
 transfer $link
 EOF
 
