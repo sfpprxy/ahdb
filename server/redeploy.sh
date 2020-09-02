@@ -27,12 +27,13 @@ pwd; du -sh *
 echo '> login remote' "$SERVER_HOST"
 echo "$SERVER_HOST"
 ls -l ./travis_rsa
-ssh -i ./travis_rsa -p 4422 root@"$SERVER_HOST" pwd
+ssh -i ./travis_rsa -p 4422 root@"$SERVER_HOST" <<"EOF"
 pwd; du -sh *
 echo link on remote
 echo "$link"
 cd ~/ahdb/server || exit
 wget "$link"
+EOF
 
 echo '> copy runner'
 #scp -P4422 ./target/ahdbserver-1.3.2-SNAPSHOT-runner root@"$SERVER_HOST":~/ahdb/server
