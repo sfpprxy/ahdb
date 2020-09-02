@@ -25,7 +25,8 @@ echo '> login remote'
 ssh -p 4422 ./travis_rsa root@"$SERVER_HOST" pwd
 echo link on remote
 echo "$link"
-pwd;ls -l
+cd ~/ahdb/server
+wget "$link"
 du sh *
 
 echo '> copy runner'
