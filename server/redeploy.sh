@@ -21,6 +21,7 @@ link=$(cat link.txt)
 echo link on travis
 echo "$link"
 
+ls -l
 echo '> login remote'
 ssh -p 4422 ../travis_rsa root@"$SERVER_HOST" pwd
 echo link on remote
