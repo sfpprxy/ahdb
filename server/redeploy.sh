@@ -21,17 +21,14 @@ link=$(cat link.txt)
 echo link on travis
 echo "$link"
 
-pwd; du -sh *
-cd ..
-pwd; du -sh *
 echo '> login remote' "$SERVER_HOST"
-ls -l ./travis_rsa
+cd ..
 ssh -t -i ./travis_rsa -p 4422 root@"$SERVER_HOST" <<EOF
 pwd; du -sh *
 echo link on remote
 echo $link
 cd ~/ahdb/server
-wget $link
+transfer $link
 EOF
 
 echo '> copy runner'
