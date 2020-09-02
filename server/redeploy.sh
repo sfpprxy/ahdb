@@ -26,7 +26,7 @@ cd ..
 pwd; du -sh *
 echo '> login remote' "$SERVER_HOST"
 ls -l ./travis_rsa
-ssh -t -i ./travis_rsa -p 4422 root@"$SERVER_HOST" <<"EOF"
+ssh -t -i ./travis_rsa -p 4422 root@"$SERVER_HOST" <<EOF
 pwd; du -sh *
 echo link on remote
 echo $link
