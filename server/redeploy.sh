@@ -22,12 +22,12 @@ echo link on travis
 echo "$link"
 
 echo '> login remote'
-ssh -p 4422 ./travis_rsa root@"$SERVER_HOST" pwd
+ssh -p 4422 ../travis_rsa root@"$SERVER_HOST" pwd
 echo link on remote
 echo "$link"
-cd ~/ahdb/server
+cd ~/ahdb/server || exit
 wget "$link"
-du sh *
+du -sh *
 
 echo '> copy runner'
 #scp -P4422 ./target/ahdbserver-1.3.2-SNAPSHOT-runner root@"$SERVER_HOST":~/ahdb/server
