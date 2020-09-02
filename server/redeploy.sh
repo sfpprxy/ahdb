@@ -25,13 +25,12 @@ pwd; du -sh *
 cd ..
 pwd; du -sh *
 echo '> login remote' "$SERVER_HOST"
-echo "$SERVER_HOST"
 ls -l ./travis_rsa
-ssh -i ./travis_rsa -p 4422 root@"$SERVER_HOST" <<"EOF"
+ssh -t -i ./travis_rsa -p 4422 root@"$SERVER_HOST" <<"EOF"
 pwd; du -sh *
 echo link on remote
 echo "$link"
-cd ~/ahdb/server || exit
+cd ~/ahdb/server
 wget "$link"
 EOF
 
