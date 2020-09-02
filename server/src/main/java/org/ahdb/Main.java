@@ -23,7 +23,6 @@ public class Main {
         public int run(String... args) throws Exception {
             log.info("application started at {}", new Date());
             log.debug("application log debug level enabled");
-            // TODO: write the fucking pid file
             Quarkus.waitForExit();
             return 0;
         }

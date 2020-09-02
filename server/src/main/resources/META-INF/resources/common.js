@@ -3,8 +3,8 @@ function sleep(ms) {
 }
 
 export function getBaseUrl() {
-    // return 'http://localhost:9999/ahdb';
-    return 'http://123.206.124.78:9999/ahdb';
+    return 'http://localhost:9999/ahdb';
+    // return 'http://123.206.124.78:9999/ahdb';
 }
 
 export function getAccount() {

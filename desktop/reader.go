@@ -72,9 +72,6 @@ func extractValuableDataByAccount(tsmfilesByAccount map[string]string) []Valuabl
 		if onDebug() {
 			typ = "debug"
 		}
-		if len(scanType) > 0 {
-			typ = scanType
-		}
 
 		dataByAccount = append(dataByAccount, ValuableDataByAccount{typ, account, ValuableData{charStr, scanStr}})
 	}

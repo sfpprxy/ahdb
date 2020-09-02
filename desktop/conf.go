@@ -8,7 +8,6 @@ import (
 
 var confFile = "adhb.json"
 var timeLayout = "2006-01-02 15:04:05"
-var scanType = ""
 
 func getBaseUrl() string {
 	host := "http://123.206.124.78:9999/ahdb"
