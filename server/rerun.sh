@@ -11,4 +11,5 @@ echo '> kill old'
 kill $(cat ./pid)
 
 echo '> start'
-nohup ./ahdbserver-1.3.2-SNAPSHOT-runner -XX:+PrintGC -XX:+PrintGCTimeStamps -XX:+VerboseGC +XX:+PrintHeapShape -Xmx32m >> ./ahdbserver.log & echo $! > pid
+VERSION=$(<version.txt)
+nohup ./ahdbserver-1.3.2-SNAPSHOT-runner -XX:+PrintGC -XX:+PrintGCTimeStamps -XX:+VerboseGC +XX:+PrintHeapShape -Xmx32m -DVersion="$VERSION">> ./ahdbserver.log & echo $! > pid
