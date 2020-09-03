@@ -12,7 +12,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import java.math.BigInteger;
 import java.util.List;
 
 @ApplicationScoped
@@ -271,10 +270,4 @@ public class QueryRepository {
         }
     }
 
-    public Object fuck() {
-        BigInteger res = nativeQuery("select count(*) from account_stats", BigInteger.class);
-        System.out.println("native query result {}" + res);
-        log.debug("native query result {}", res);
-        return res;
-    }
 }

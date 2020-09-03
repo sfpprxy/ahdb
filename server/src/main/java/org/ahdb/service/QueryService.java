@@ -168,8 +168,4 @@ public class QueryService {
         }
     }
 
-    public Object test() {
-        return queryRepository.fuck();
-    }
-
 }

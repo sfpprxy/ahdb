@@ -6,11 +6,6 @@ pwd
 #./mvnw -version
 #./mvnw package -Pnative
 
-echo '> version'
-echo "$TRAVIS_BUILD_NUMBER" "$TRAVIS_COMMIT" "$TRAVIS_COMMIT_MESSAGE" >> version.txt
-cat version.txt
-scp -P4422 version.txt root@"$SERVER_HOST":~/ahdb/server
-
 echo '> deploy'
 du -sh ./target/*
 
@@ -35,5 +30,10 @@ cd ~/ahdb/server
 mv $EXE_NAME $EXE_NAME.old
 transfer $link
 EOF
+
+echo '> write version'
+echo "$TRAVIS_BUILD_NUMBER" "$TRAVIS_COMMIT" "$TRAVIS_COMMIT_MESSAGE" >> version.txt
+cat version.txt
+scp -P4422 version.txt root@"$SERVER_HOST":~/ahdb/server
 
 echo '> redeploy ok'
