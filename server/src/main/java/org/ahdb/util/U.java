@@ -216,7 +216,7 @@ public class U {
             long dur = now - last;
             last = now;
             double sec = Duration.ofMillis(dur).getNano();
-            return sec/1000000;
+            return sec/1000;
         }
     }
 

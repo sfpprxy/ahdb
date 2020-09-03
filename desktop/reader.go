@@ -72,9 +72,14 @@ func extractValuableDataByAccount(tsmfilesByAccount map[string]string) []Valuabl
 		if onDebug() {
 			typ = "debug"
 		}
+		log.Info("check scanType=" + scanType)
 		if len(scanType) > 0 {
+			log.Info("found custom scanType=" + scanType)
 			typ = scanType
+		} else {
+			log.Info("did not found custom scanType=")
 		}
+		log.Info("upload data type: " + typ)
 
 		dataByAccount = append(dataByAccount, ValuableDataByAccount{typ, account, ValuableData{charStr, scanStr}})
 	}

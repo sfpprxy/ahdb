@@ -1,11 +1,13 @@
 package org.ahdb.model;
 
+import org.springframework.data.domain.Persistable;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.sql.Timestamp;
 
 @Entity
-public class ItemScan {
+public class ItemScan implements Persistable<String> {
     // itemString,minBuyout,marketValue,numAuctions,quantity,lastScan
     @Id
     public String id;
@@ -20,6 +22,11 @@ public class ItemScan {
 
     public String getId() {
         return id;
+    }
+
+    @Override
+    public boolean isNew() {
+        return true;
     }
 
     public ItemScan setId(String id) {
