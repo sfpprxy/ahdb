@@ -3,8 +3,9 @@ function sleep(ms) {
 }
 
 export function getBaseUrl() {
-    return 'http://localhost:9999/ahdb';
-    // return 'http://123.206.124.78:9999/ahdb';
+    const host = window.location.host.toString();
+    // return 'http://localhost:9999/ahdb';
+    return `http://${host}/ahdb`;
 }
 
 export function getAccount() {
