@@ -1,10 +1,16 @@
 package org.ahdb.model;
 
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
+
 import java.sql.Timestamp;
 
 
+@RegisterForReflection
 public class Day14Stat {
+
+    public Day14Stat() {
+    }
 
     public String id;
     public String name;

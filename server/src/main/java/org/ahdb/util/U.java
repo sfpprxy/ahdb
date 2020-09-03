@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Parameter;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -256,7 +257,17 @@ public class U {
 
     public static <T> T tupleToBean(Object[] tuple, Class<T> clz) {
         Constructor<?>[] cons = clz.getConstructors();
-        if (cons.length != 1) {
+        if (cons.length == 0) {
+            throw new RuntimeException("Cannot find Constructor");
+        }
+        if (cons.length > 1) {
+            for (Constructor<?> con : cons) {
+                System.out.println("con.getName()" + con.getName());
+                System.out.println("con.getParameters()");
+                for (Parameter p : con.getParameters()) {
+                    System.out.println(p);
+                }
+            }
             throw new RuntimeException("Constructor more than 1");
         }
         if (cons[0].getParameterCount() >= 1) {

@@ -13,4 +13,9 @@ kill $(cat ./pid)
 echo '> start'
 chmod +x ahdbserver-1.3.2-SNAPSHOT-runner
 VERSION=$(<version.txt)
-nohup ./ahdbserver-1.3.2-SNAPSHOT-runner -XX:+PrintGC -XX:+PrintGCTimeStamps -XX:+VerboseGC +XX:+PrintHeapShape -Xmx32m -DVersion="$VERSION">> ./ahdbserver.log & echo $! > pid
+
+nohup ./ahdbserver-1.3.2-SNAPSHOT-runner \
+-Xmx512m \
+-DVersion="$VERSION" \
+-XX:+PrintGC -XX:+PrintGCTimeStamps +XX:+PrintHeapShape \
+>> ./ahdbserver.log & echo $! > pid
