@@ -6,8 +6,8 @@ pwd
 #./mvnw -version
 #./mvnw package -Pnative
 
-echo '> env'
-echo $TRAVIS_BUILD_NUMBER $TRAVIS_COMMIT $TRAVIS_COMMIT_MESSAGE >> version.txt
+echo '> version'
+echo "$TRAVIS_BUILD_NUMBER" "$TRAVIS_COMMIT" "$TRAVIS_COMMIT_MESSAGE" >> version.txt
 cat version.txt
 scp -P4422 version.txt root@"$SERVER_HOST":~/ahdb/server
 

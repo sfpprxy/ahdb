@@ -1,5 +1,6 @@
 package org.ahdb.service;
 
+import io.quarkus.scheduler.Scheduled;
 import org.ahdb.common.AhdbUserException;
 import org.ahdb.model.*;
 import org.ahdb.repo.ItemScanRepository;
@@ -156,8 +157,15 @@ public class QueryService {
         return buildItemStats(content);
     }
 
+    @Scheduled(cron = "0 48 11 * * ?")
     public void refresh() {
-        queryRepository.refreshDay14ItemStats();
+        try {
+            log.info("refreshDay14ItemStats START");
+            queryRepository.refreshDay14ItemStats();
+            log.info("refreshDay14ItemStats OK");
+        } catch (Exception ex) {
+            log.error("refreshDay14ItemStats ERR", ex);
+        }
     }
 
     public Object test() {
