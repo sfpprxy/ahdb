@@ -15,7 +15,7 @@ chmod +x ahdbserver-1.3.2-SNAPSHOT-runner
 VERSION=$(<version.txt)
 
 nohup ./ahdbserver-1.3.2-SNAPSHOT-runner \
--Xmx512m \
+-Xmx256m \
 -DVersion="$VERSION" \
 -XX:+PrintGC -XX:+PrintGCTimeStamps +XX:+PrintHeapShape \
 >> ./ahdbserver.log & echo $! > pid
