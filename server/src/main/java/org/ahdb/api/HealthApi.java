@@ -20,8 +20,11 @@ public class HealthApi {
         long free = rt.freeMemory();
         long total = rt.totalMemory();
         String mem = String.format("max %s free %s total %s", max, free, total);
+        String memM = String.format("max %sm free %sm total %sm", max/1024/1024, free/1024/1024, total/1024/1024);
         log.info(mem);
         log.debug(mem);
+        log.info(memM);
+        log.debug(memM);
         return mem;
     }
 
