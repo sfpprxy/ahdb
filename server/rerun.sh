@@ -14,8 +14,14 @@ echo '> start'
 chmod +x ahdbserver-1.3.2-SNAPSHOT-runner
 VERSION=$(<version.txt)
 
+# nohup ./ahdbserver-1.3.2-SNAPSHOT-runner \
+# -Xmx"${1:-256m}" \
+# -DVersion="$VERSION" \
+# -XX:+PrintGC -XX:+PrintGCTimeStamps +XX:+PrintHeapShape \
+# >> ./ahdbserver.log & echo $! > pid
+
 nohup ./ahdbserver-1.3.2-SNAPSHOT-runner \
--Xmx256m \
 -DVersion="$VERSION" \
 -XX:+PrintGC -XX:+PrintGCTimeStamps +XX:+PrintHeapShape \
+-Xmn30M -Xmx32M \
 >> ./ahdbserver.log & echo $! > pid
