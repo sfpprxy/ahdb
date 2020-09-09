@@ -157,7 +157,7 @@ public class QueryService {
         return buildItemStats(content);
     }
 
-    @Scheduled(cron = "0 48 11 * * ?")
+    @Scheduled(cron = "0 30 4 * * ?")
     public void refresh() {
         try {
             log.info("refreshDay14ItemStats START");
