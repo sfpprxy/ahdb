@@ -32,7 +32,7 @@ transfer $link
 EOF
 
 echo '> write version'
-echo "$TRAVIS_BUILD_NUMBER" "$TRAVIS_COMMIT" "$TRAVIS_COMMIT_MESSAGE" >> version.txt
+echo "$TRAVIS_BUILD_NUMBER" "${$TRAVIS_COMMIT:0:4}" "$TRAVIS_COMMIT_MESSAGE" >> version.txt
 cat version.txt
 scp -P4422 version.txt root@"$SERVER_HOST":~/ahdb/server
 
