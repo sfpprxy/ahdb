@@ -14,7 +14,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -208,15 +207,15 @@ public class U {
             start = System.currentTimeMillis();
         }
 
-        public double getTime() {
+        public double getSeconds() {
             if (last == 0) {
                 last = start;
             }
             long now = System.currentTimeMillis();
-            long dur = now - last;
+            double dur = now - last;
             last = now;
-            double sec = Duration.ofMillis(dur).getNano();
-            return sec/1000;
+
+            return dur / 1000;
         }
     }
 

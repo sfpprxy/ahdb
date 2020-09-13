@@ -44,7 +44,7 @@ public class RawDataService {
 
         ValuableData dataByA = U.gson.fromJson(lr.last().rawStr, ValuableData.class);
 
-        log.debug("parseRawFromDB time: {}", timer.getTime());
+        log.debug("parseRawFromDB time: {}", timer.getSeconds());
 
         ValuableDataByAccount vd = new ValuableDataByAccount()
                 .setAccountId("debug-account#1")

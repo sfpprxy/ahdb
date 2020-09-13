@@ -33,7 +33,7 @@ public class ItemScanService {
             U.Timer t = U.newTimer();
             log.info("start itemScanRepository.saveAll");
             itemScanRepository.saveAll(lis);
-            log.info("itemScanRepository.saveAll time: {} seconds", t.getTime());
+            log.info("itemScanRepository.saveAll time: {} seconds", t.getSeconds());
             return true;
         } else {
             log.debug("scanTime {} last5MinScanTime {}", scanTime, maybeis.getScanTime());
