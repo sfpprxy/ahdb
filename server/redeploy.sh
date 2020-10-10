@@ -14,7 +14,7 @@ wget https://hub.fastgit.org/Mikubill/transfer/releases/download/v0.4.7/transfer
 tar xzvf transfer_0.4.7_linux_amd64.tar.gz
 
 echo '> upload jar'
-EXE_NAME="ahdbserver-1.3.2-SNAPSHOT-runner"
+EXE_NAME="ahdbserver-1.3.3-SNAPSHOT-runner"
 ./transfer cow ./target/$EXE_NAME | grep 'Download Link: ' | cut -d' ' -f3 >> link.txt
 link=$(cat link.txt)
 echo link on travis

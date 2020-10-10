@@ -157,12 +157,21 @@ public class QueryService {
         return buildItemStats(content);
     }
 
-    @Scheduled(cron = "0 30 4 * * ?")
+    @Scheduled(cron = "0 30 5 * * ?")
     public void refresh() {
         try {
             log.info("refreshDay14ItemStats START");
             queryRepository.refreshDay14ItemStats();
             log.info("refreshDay14ItemStats OK");
+        } catch (Exception ex) {
+            log.error("refreshDay14ItemStats ERR", ex);
+        }
+    }
+
+    @Scheduled(cron = "0 00 5 * * ?")
+    public void testCron() {
+        try {
+            log.info("testCron START");
         } catch (Exception ex) {
             log.error("refreshDay14ItemStats ERR", ex);
         }
